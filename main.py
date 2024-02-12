@@ -15,9 +15,7 @@ class DeckApp(App):
 
     def draw_cards(self):
         card1 = self.deck.deck[0]
-        self.card1_image.source = f'images/card1.jpg'
         card2 = self.deck.deck[1]
-        self.card2_image.source = f'images/card2.jpg'
         difference, winner = self.deck.compare_cards(card1, card2)
         self.result_text = f'Difference: {difference}, Winner: {winner}'
 

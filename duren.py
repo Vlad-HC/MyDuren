@@ -20,9 +20,9 @@ class Deck:
 
         if suit1 == suit2:
             if value1 > value2 :
-                return value1 - value2, '<-- різниця 1 карта більше'
+                return value1 - value2, '<-- різниця  карта n1 більше'
             if value2 > value1:
-                return value2 - value1, '<-- різниця 2 карта більше'
+                return value2 - value1, '<-- різниця карта n2 більше'
         elif suit1 != suit2:
             return 'масті не співпадають'
             
@@ -31,7 +31,38 @@ class Deck:
         else:
             return '2 карта більше'  # Друга карта перемагає
 
-# Приклад використання:
+    def create_decks():
+        ...
+
+
+class Card :
+    def __init__(self) -> None:
+        pass
+    
+    def attack_card():
+        ...
+    
+    def defense_card():
+        ...
+
+
+class Player :
+    def __init__(self) -> None:
+        pass
+
+    def attack():
+        ...
+
+    def defense():
+        ...    
+
+    def take_cards():
+        ...
+        
+    def take_cards_from_deck():
+        ...
+            
+
 deck = Deck()
 card1 = deck.deck[0]
 print('---------------------------------')

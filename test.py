@@ -8,10 +8,6 @@ class Container(BoxLayout):
 class MyFirstApp(App):
     def build(self):
         BoxL = BoxLayout()
-        b1= Button(text = 'lol')
-        b2= Button(text = 'kek')
-        BoxL.add_widget(b1)
-        BoxL.add_widget(b2)
         return Container()
     
 

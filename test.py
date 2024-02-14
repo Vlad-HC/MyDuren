@@ -19,16 +19,8 @@ class Container(BoxLayout):
 
 
 
-class MyFirstApp(MDApp):
-    def build(self):
-    #     self.img1 = Image(source = 'images/card1.jpg')
-    #     self.img1.add_widget(HoverItem())
-    #     return self.img1
-        self.btn = Button(text = 'bimbim', size_hint = (0.5, 0.5))
-        self.btn.add_widget(HoverItem())
-        return self.btn
 
-class HoverItem(MyFirstApp, HoverBehavior):
+class HoverItem(Container,HoverBehavior):
 
     def on_enter(self, *args):
         self.btn.size_hint = (1.0, 1.0)
@@ -37,6 +29,17 @@ class HoverItem(MyFirstApp, HoverBehavior):
     def on_leave(self, *args):
         self.btn.size = (2000,200)
         print('out')
+
+class MyFirstApp(MDApp):
+    def build(self):
+    #     self.img1 = Image(source = 'images/card1.jpg')
+    #     self.img1.add_widget(HoverItem())
+    #     return self.img1
+        self.btn = Button(text = 'bimbim', size_hint = (0.5, 0.5))
+        self.btn.add_widget(HoverItem())
+        return self.btn
+    
+
 
 if __name__ == '__main__':
     MyFirstApp().run()

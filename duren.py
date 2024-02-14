@@ -2,9 +2,10 @@ import random
 from itertools import product
 
 class Deck:
+    deck: list[tuple[str,str,int]]
     def __init__(self):
         self.ranks_values = {
-            '2': 2, '3': 3, '4': 4, '5': 5, '6': 6, '7': 7, '8': 8, '9': 9, '10': 10,
+            '6': 6, '7': 7, '8': 8, '9': 9, '10': 10,
             'J': 11, 'Q': 12, 'K': 13, 'A': 14
         }
         suits = ['♥', '♦️', '♣️', '♠️']
@@ -31,12 +32,17 @@ class Deck:
         else:
             return '2 карта більше'  # Друга карта перемагає
 
-    def create_decks():
-        ...
+    def create_decks(self): # <-- decks for player 
+        player_deck = []
 
+        for i in range(6):
+            a = random.choice(self.deck)
+            self.deck.remove(a)
+            player_deck.append(a)
+        return player_deck
 
 class Card :
-    def __init__(self) -> None:
+    def __init__(self) :
         pass
     
     def attack_card():
@@ -47,8 +53,12 @@ class Card :
 
 
 class Player :
-    def __init__(self) -> None:
-        pass
+    def __init__(self,name: str):
+        self.name = name 
+
+        self.deck = Deck().create_decks()
+        print(self.deck)
+        ...
 
     def attack():
         ...
@@ -63,11 +73,17 @@ class Player :
         ...
             
 
-deck = Deck()
-card1 = deck.deck[0]
-print('---------------------------------')
-print(card1)
-card2 = deck.deck[1]
-print(card2)
-result = deck.compare_cards(card1, card2)
-print(result)  # Виведе різницю значень карт 
+
+# card1 = deck.deck[0]
+# print('---------------------------------')
+# print(card1)
+# card2 = deck.deck[1]
+# print(card2)
+# result = deck.compare_cards(card1, card2)
+# print(result)  # Виведе різницю значень карт 
+
+# deck.create_decks() <-- stworue kolodu dla grawcia 
+# print(deck.deck)
+
+
+Player('lalalal')

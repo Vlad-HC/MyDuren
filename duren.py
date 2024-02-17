@@ -74,13 +74,12 @@ class Player :
 
 class Durak:
 
-
-    def __init__(self,first_deck: list, second_deck: list, game_deck: list ,fisrs_name: str, second_name: str,durak_ex):
+    def __init__(self,first_deck: list, second_deck: list, game_deck: list ,durak_ex):
         self.game_deck = game_deck
         self.first_deck = first_deck
         self.second_deck = second_deck
-        self.first_name = fisrs_name
-        self.second_name = second_name
+        self.first_name = input('write your name: ')
+        self.second_name = input('write your name: ')
         self.durak_ex = durak_ex
         self.odboy = []
         print(f'{self.first_name} --> chodit {first_deck}')
@@ -129,4 +128,4 @@ class Durak:
             
 
 deck_instance = Deck()
-Durak(deck_instance.create_deck_for_player(), deck_instance.create_deck_for_player(),deck_instance.deck, 'Vlad', 'Alisa',deck_instance)
+Durak(deck_instance.create_deck_for_player(), deck_instance.create_deck_for_player(),deck_instance.deck ,deck_instance)

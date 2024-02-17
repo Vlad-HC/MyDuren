@@ -7,13 +7,6 @@ class Card :
     def __init__(self) :
         pass
     
-    def attack_card():
-        ...
-    
-    def defense_card():
-        ...
-
-
 
 class Deck:
     deck: list[tuple[str,str,int]]
@@ -37,24 +30,20 @@ class Deck:
 
         if suit1 == suit2:
             if value1 > value2 :
-                return value1 - value2, '<-- різниця  карта n1 більше'
+                return 1
             if value2 > value1:
-                return value2 - value1, '<-- різниця карта n2 більше'
+                return 2
         elif suit1 != suit2:
-            return 'масті не співпадають'
+            return 0
             
-        elif  value1 == 2 and value2 == 14:  # Якщо значення першої карти на 1 більше за значення другої
-            return '1 карта більше'  # Перша карта перемагає
-        else:
-            return '2 карта більше'  # Друга карта перемагає
     def create_deck_for_player(self): # <-- create deck for player 
         player_deck = []
-        for i in range(4):
+        # player_deck_2 = []
+        for i in range(6):
             random_card = random.choice(self.deck)
             self.deck.remove(random_card)
             player_deck.append(random_card)
         return player_deck
-
 
 
 class Player :
@@ -63,14 +52,15 @@ class Player :
         self.game_deck = game_deck
         self.player_deck = game_deck.create_deck_for_player()
 
-    def take_cards_from_deck(self):
-        for i in range(6 - len(self.player_deck) ):
-            card = random.choice(self.game_deck.deck)
-            self.game_deck.deck.remove(card)
-            self.player_deck.append(card)
-        return self.player_deck
-    
 
+    def take_cards_from_deck(self):
+        if len(self.player_deck) < 6:
+            for i in range(6 - len(self.player_deck) ):
+                card = random.choice(self.game_deck.deck)
+                self.game_deck.deck.remove(card)
+                self.player_deck.append(card)
+            return self.player_deck
+    
 
     def attack(self):
         ...
@@ -82,42 +72,61 @@ class Player :
         ...
         
 
-
-
 class Durak:
-    def __init__(self) -> None:
-        pass
 
 
-
-    def compare_cards(self, card1, card2):
-        _, suit1, value1 = card1
-        _, suit2, value2 = card2
-
-        if suit1 == suit2:
-            if value1 > value2 :
-                return value1 - value2, '<-- різниця  карта n1 більше'
-            if value2 > value1:
-                return value2 - value1, '<-- різниця карта n2 більше'
-        elif suit1 != suit2:
-            return 'масті не співпадають'
+    def __init__(self,first_deck: list, second_deck: list, game_deck: list ,fisrs_name: str, second_name: str,durak_ex):
+        self.game_deck = game_deck
+        self.first_deck = first_deck
+        self.second_deck = second_deck
+        self.first_name = fisrs_name
+        self.second_name = second_name
+        self.durak_ex = durak_ex
+        self.odboy = []
+        print(f'{self.first_name} --> chodit {first_deck}')
+        print(f'{self.second_name} -->{second_deck}')
+        print('cards in deck -->', len(game_deck))
+        command = input("attack/defense/take-cards/end-choda: ")
+        if command == 'a':
+            card = int(input(f'choose card to attack(0,1,2...): '))
+            att_card = first_deck.pop(card)
+            print(f'{self.first_name}, attack -->',att_card)
+        
+        command = input("attack/defense/take-cards/end-choda: ")
             
-        elif  value1 == 2 and value2 == 14:  # Якщо значення першої карти на 1 більше за значення другої
-            return '1 карта більше'  # Перша карта перемагає
-        else:
-            return '2 карта більше'  # Друга карта перемагає
+        if command == 'd':
+            card = int(input(f'choose card to defense(0,1,2...): '))
+            def_card = second_deck.pop(card)
+            print(f'{self.second_name}, defense -->',def_card)
+            result = durak_ex.compare_cards(att_card,def_card)
+            
+            while result != 2 and command != 'e':
+                print('imposible to bito')
+                second_deck.append(def_card)
+                print(second_deck)
+                command = input("attack/defense/take-cards/end-choda: ")
+                
+                card = int(input(f'choose card to attack(0,1,2...): '))
+                def_card = second_deck.pop(card)
+                result = durak_ex.compare_cards(att_card,def_card)
+            command = input("attack/defense/take-cards/end-choda: ")
+            
+            if result  == 2:
+                print(att_card, '<', def_card)
+                print('Bito')
+            
 
-# card1 = deck.deck[0]
-# print('---------------------------------')
-# print(card1)
-# card2 = deck.deck[1]
-# print(card2)
-# result = deck.compare_cards(card1, card2)
-# print(result)  # Виведе різницю значень карт 
+        if command == 'take-cards':
+            cards = att_card or def_card or att_card,def_card
+            buff = []
+            buff.append(cards)
+            for  i in buff:
+                second_deck.append(i)
+            print(second_deck)
+        if command == 'end-choda':
+            ...
 
-# deck.create_decks() <-- stworue kolodu dla grawcia 
-# print(deck.deck)
+            
+
 deck_instance = Deck()
-for i in  range(10):
-    Player('Vlad', deck_instance)
-   
+Durak(deck_instance.create_deck_for_player(), deck_instance.create_deck_for_player(),deck_instance.deck, 'Vlad', 'Alisa',deck_instance)

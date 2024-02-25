@@ -19,10 +19,8 @@ class Deck:
         suits = ['♥', '♦️', '♣️', '♠️']
         ranks = list(self.ranks_values.keys())
 
-
         self.deck = [(rank, suit, self.ranks_values[rank]) for rank, suit in product(ranks, suits)]
         random.shuffle(self.deck)
-        
 
     def compare_cards(self, card1, card2):
         _, suit1, value1 = card1
@@ -82,17 +80,32 @@ class Durak:
         self.second_name = input('write your name: ')
         self.durak_ex = durak_ex
         self.odboy = []
+
+
         print(f'{self.first_name} --> chodit {first_deck}')
         print(f'{self.second_name} -->{second_deck}')
         print('cards in deck -->', len(game_deck))
-        command = input("attack/defense/take-cards/end-choda: ")
-        if command == 'a':
-            card = int(input(f'choose card to attack(0,1,2...): '))
-            att_card = first_deck.pop(card)
-            print(f'{self.first_name}, attack -->',att_card)
+
         
         command = input("attack/defense/take-cards/end-choda: ")
-            
+
+
+        if command != 'a' or 'd' or 'take-cards':
+            print('please write correct command!')
+
+        if command == 'a':
+            try:
+                card = int(input(f'choose card to attack(0,1,2...): '))
+                att_card = first_deck.pop(card)
+                print(f'{self.first_name}, attack -->',att_card)
+            except IndexError:
+                print('card index out of range please write correct index of card! ')
+        
+        command = input("attack/defense/take-cards/end-choda: ")
+
+        if False:
+            print('you cant do that')
+
         if command == 'd':
             card = int(input(f'choose card to defense(0,1,2...): '))
             def_card = second_deck.pop(card)

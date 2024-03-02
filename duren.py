@@ -86,57 +86,56 @@ class Durak:
         print(f'{self.second_name} -->{second_deck}')
         print('cards in deck -->', len(game_deck))
 
-        
-        command = input("attack/defense/take-cards/end-choda: ")
-
-
-        if command != 'a' or 'd' or 'take-cards':
-            print('please write correct command!')
-
-        if command == 'a':
-            try:
-                card = int(input(f'choose card to attack(0,1,2...): '))
-                att_card = first_deck.pop(card)
-                print(f'{self.first_name}, attack -->',att_card)
-            except IndexError:
-                print('card index out of range please write correct index of card! ')
-        
-        command = input("attack/defense/take-cards/end-choda: ")
-
-        if False:
-            print('you cant do that')
-
-        if command == 'd':
-            card = int(input(f'choose card to defense(0,1,2...): '))
-            def_card = second_deck.pop(card)
-            print(f'{self.second_name}, defense -->',def_card)
-            result = durak_ex.compare_cards(att_card,def_card)
-            
-            while result != 2 and command != 'e':
-                print('imposible to bito')
-                second_deck.append(def_card)
-                print(second_deck)
-                command = input("attack/defense/take-cards/end-choda: ")
-                
-                card = int(input(f'choose card to attack(0,1,2...): '))
-                def_card = second_deck.pop(card)
-                result = durak_ex.compare_cards(att_card,def_card)
+        while len(first_deck) or len(second_deck) and len(game_deck) != 0:     
             command = input("attack/defense/take-cards/end-choda: ")
-            
-            if result  == 2:
-                print(att_card, '<', def_card)
-                print('Bito')
-            
 
-        if command == 'take-cards':
-            cards = att_card or def_card or att_card,def_card
-            buff = []
-            buff.append(cards)
-            for  i in buff:
-                second_deck.append(i)
-            print(second_deck)
-        if command == 'end-choda':
-            ...
+
+            # if command != 'a' or 'd' or 'take-cards':
+            #     print('please write correct command!')
+
+
+            if command == 'a':
+                try:
+                    card = int(input(f'choose card to attack(0,1,2...): '))
+                    att_card = first_deck.pop(card)
+                    print(f'{self.first_name}, attack -->',att_card)
+                except IndexError:
+                    print('card index out of range please write correct index of card! ')
+            
+            # command = input("attack/defense/take-cards/end-choda: ")
+
+
+            if command == 'd':
+                card = int(input(f'choose card to defense(0,1,2...): '))
+                def_card = second_deck.pop(card)
+                print(f'{self.second_name}, defense -->',def_card)
+                result = durak_ex.compare_cards(att_card,def_card)
+                
+                while result != 2 and command != 't':
+                    print('imposible to bito')
+                    second_deck.append(def_card)
+                    print(second_deck)
+                    
+                    card = int(input(f'choose card to defense(0,1,2...): '))
+                    def_card = second_deck.pop(card)
+                    result = durak_ex.compare_cards(att_card,def_card)
+                    command = input("attack/defense/take-cards/end-choda: ")
+                
+                if result  == 2:
+                    print(att_card, '<', def_card)
+                    print('✔')
+                
+
+            if command == 't':
+                cards = att_card or def_card or att_card,def_card
+                buff = []
+                buff.append(cards)
+                for  i in buff:
+                    second_deck.append(i)
+                print(second_deck)
+
+            if command == 'end-choda':
+                ...
 
             
 

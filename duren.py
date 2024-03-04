@@ -27,12 +27,13 @@ class Deck:
         _, suit2, value2 = card2
 
         if suit1 == suit2:
-            if value1 > value2 :
+            if value1 > value2:
                 return 1
             if value2 > value1:
                 return 2
-        elif suit1 != suit2:
-            return 0
+        
+        return 0
+        
             
     def create_deck_for_player(self): # <-- create deck for player 
         player_deck = []
@@ -57,7 +58,7 @@ class Player :
                 card = random.choice(self.game_deck.deck)
                 self.game_deck.deck.remove(card)
                 self.player_deck.append(card)
-            return self.player_deck
+        return self.player_deck
     
 
     def attack(self):
@@ -79,6 +80,7 @@ class Durak:
         self.first_name = input('write your name: ')
         self.second_name = input('write your name: ')
         self.durak_ex = durak_ex
+        self.players = [self.first_name, self.second_name]
         self.odboy = []
 
 
@@ -88,13 +90,10 @@ class Durak:
 
         while len(first_deck) or len(second_deck) and len(game_deck) != 0:     
             command = input("attack/defense/take-cards/end-choda: ")
+            if command not in ["a", "d", "t"]:
+                print('wrong command')
 
-
-            # if command != 'a' or 'd' or 'take-cards':
-            #     print('please write correct command!')
-
-
-            if command == 'a':
+            elif command == 'a':
                 try:
                     card = int(input(f'choose card to attack(0,1,2...): '))
                     att_card = first_deck.pop(card)
@@ -105,34 +104,46 @@ class Durak:
             # command = input("attack/defense/take-cards/end-choda: ")
 
 
-            if command == 'd':
-                card = int(input(f'choose card to defense(0,1,2...): '))
-                def_card = second_deck.pop(card)
-                print(f'{self.second_name}, defense -->',def_card)
-                result = durak_ex.compare_cards(att_card,def_card)
-                
+            elif command == 'd':
+
+                try:
+                    
+                    card = int(input(f'choose card to defense(0,1,2...): '))
+                    def_card = second_deck.pop(card)
+                    print(f'{self.second_name}, defense -->',def_card)
+                    result = durak_ex.compare_cards(att_card,def_card)
+                except IndexError:
+                    print('card index out of range please write correct index of card! ')
+
+                    while result not in [0,1,2]:
+                        ...
                 while result != 2 and command != 't':
                     print('imposible to bito')
                     second_deck.append(def_card)
                     print(second_deck)
-                    
+                        
                     card = int(input(f'choose card to defense(0,1,2...): '))
                     def_card = second_deck.pop(card)
                     result = durak_ex.compare_cards(att_card,def_card)
                     command = input("attack/defense/take-cards/end-choda: ")
-                
+
+
                 if result  == 2:
                     print(att_card, '<', def_card)
                     print('✔')
                 
 
             if command == 't':
-                cards = att_card or def_card or att_card,def_card
-                buff = []
-                buff.append(cards)
-                for  i in buff:
-                    second_deck.append(i)
-                print(second_deck)
+                try:
+                    cards = att_card or def_card or att_card,def_card
+                    buff = []
+                    buff.append(cards)
+                    for  i in buff:
+                        second_deck.append(i)
+                    print(second_deck)
+                except UnboundLocalError: 
+                    print('you cant do this')
+                
 
             if command == 'end-choda':
                 ...

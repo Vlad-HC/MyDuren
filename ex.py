@@ -17,8 +17,9 @@ def ooo():
 
 
 
-
-print(ooo())
+uu=8
+print(uu%8 == uu)
+# print(ooo())
 
 
 # def out_15(list):

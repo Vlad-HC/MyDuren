@@ -1,12 +1,50 @@
 import random
 from itertools import product
 import math
+from termcolor import colored, cprint
+from colorama import init, Fore, Back, Style
 
 
-class Card :
-    def __init__(self) :
-        pass
-    
+class Card:
+    def __init__(self, suit, rank) -> None:
+        self.rank = rank
+        self.suit = suit
+
+    def create_card():
+        # Create six cards
+        cards = [Card('♥', '10'), Card('♠', 'J'), Card('♦', '10'), Card('♣', '10'), Card('♥', '9'), Card('♠', '10')]
+
+        # Print the cards in a row
+        for card in cards:cprint(Style.BRIGHT + f' _____   ','black' ,'on_light_magenta',end='')
+        print()
+
+        for card in cards:
+            if card.rank=='10':
+                cprint(Style.BRIGHT + f'|   {card.rank}|  ', 'black' ,'on_light_magenta',end='')
+            else:
+                cprint(Style.BRIGHT + f'|    {card.rank}|  ', 'black' ,'on_light_magenta',end='')
+        print()
+
+        for card in cards:cprint(Style.BRIGHT + '|     |  ','black' ,'on_light_magenta', end='')
+        print()
+
+        for card in cards:
+            if card.suit in ['♠','♣']:
+                cprint(Style.BRIGHT + f'|  {card.suit}  |  ', 'black' ,'on_light_magenta',end='')
+            if card.suit in ['♥','♦']:
+                cprint(Style.BRIGHT + f'|  {card.suit}  |  ', 'red' ,'on_light_magenta',end='')
+        print()
+
+        for card in cards:cprint(Style.BRIGHT + '|     |  ','black' ,'on_light_magenta', end='')
+        print()
+        for card in cards:
+            if card.rank == '10':
+                cprint(Style.BRIGHT + f'|{card.rank}   |  ', 'black' ,'on_light_magenta',end='')
+            else:
+                cprint(Style.BRIGHT + f'|{card.rank}    |  ', 'black' ,'on_light_magenta',end='')
+        print()
+
+        for card in cards:cprint(Style.BRIGHT + ' ‾‾‾‾‾   ', 'black' ,'on_light_magenta',end='')
 
 class Deck:
     deck: list[tuple[str,str,int]]
@@ -17,7 +55,7 @@ class Deck:
             'J': 11, 'Q': 12, 'K': 13, 'A': 14
         }
         suits = ['♥', '♦️', '♣️', '♠️']
-        ranks = list(self.ranks_values.keys())
+        ranks = list(self.ranks_values)
 
         self.deck = [(rank, suit, self.ranks_values[rank]) for rank, suit in product(ranks, suits)]
         random.shuffle(self.deck)
@@ -37,7 +75,6 @@ class Deck:
             
     def create_deck_for_player(self): # <-- create deck for player 
         player_deck = []
-        # player_deck_2 = []
         for i in range(6):
             random_card = random.choice(self.deck)
             self.deck.remove(random_card)
@@ -88,7 +125,7 @@ class Durak:
         print(f'{self.second_name} -->{second_deck}')
         print('cards in deck -->', len(game_deck))
 
-        while len(first_deck) or len(second_deck) and len(game_deck) != 0:     
+        while len(first_deck)!=0  or len(second_deck) !=0 and len(game_deck) != 0:     
             command = input("attack/defense/take-cards/end-choda: ")
             if command not in ["a", "d", "t"]:
                 print('wrong command')
@@ -96,7 +133,7 @@ class Durak:
             elif command == 'a':
                 try:
                     card = int(input(f'choose card to attack(0,1,2...): '))
-                    att_card = first_deck.pop(card)
+                    att_card = first_deck.pop(card-1)
                     print(f'{self.first_name}, attack -->',att_card)
                 except IndexError:
                     print('card index out of range please write correct index of card! ')
@@ -109,7 +146,7 @@ class Durak:
                 try:
                     
                     card = int(input(f'choose card to defense(0,1,2...): '))
-                    def_card = second_deck.pop(card)
+                    def_card = second_deck.pop(card-1)
                     print(f'{self.second_name}, defense -->',def_card)
                     result = durak_ex.compare_cards(att_card,def_card)
                 except IndexError:
@@ -123,7 +160,7 @@ class Durak:
                     print(second_deck)
                         
                     card = int(input(f'choose card to defense(0,1,2...): '))
-                    def_card = second_deck.pop(card)
+                    def_card = second_deck.pop(card-1)
                     result = durak_ex.compare_cards(att_card,def_card)
                     command = input("attack/defense/take-cards/end-choda: ")
 
@@ -150,5 +187,6 @@ class Durak:
 
             
 
-deck_instance = Deck()
-Durak(deck_instance.create_deck_for_player(), deck_instance.create_deck_for_player(),deck_instance.deck ,deck_instance)
+# deck_instance = Deck()
+# Durak(deck_instance.create_deck_for_player(), deck_instance.create_deck_for_player(),deck_instance.deck ,deck_instance)
+Card('♥','7')

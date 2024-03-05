@@ -6,14 +6,13 @@ from colorama import init, Fore, Back, Style
 
 
 class Card:
-    def __init__(self, suit, rank) -> None:
+    def __init__(self,rank,suit,value) -> None:
         self.rank = rank
         self.suit = suit
 
     def create_card():
         # Create six cards
-        cards = [Card('♥', '10'), Card('♠', 'J'), Card('♦', '10'), Card('♣', '10'), Card('♥', '9'), Card('♠', '10')]
-
+        cards = [Card(rank, suit, value) for rank, suit, value in {###}]
         # Print the cards in a row
         for card in cards:cprint(Style.BRIGHT + f' _____   ','black' ,'on_light_magenta',end='')
         print()
@@ -29,14 +28,14 @@ class Card:
         print()
 
         for card in cards:
-            if card.suit in ['♠','♣']:
-                cprint(Style.BRIGHT + f'|  {card.suit}  |  ', 'black' ,'on_light_magenta',end='')
-            if card.suit in ['♥','♦']:
-                cprint(Style.BRIGHT + f'|  {card.suit}  |  ', 'red' ,'on_light_magenta',end='')
+            suit_color= 'black'
+            if card.suit in ['♥','♦️']:
+                suit_color = 'red'
+            cprint(Style.BRIGHT + f'|  {card.suit}  |  ', suit_color ,'on_light_magenta',end='')
         print()
 
         for card in cards:cprint(Style.BRIGHT + '|     |  ','black' ,'on_light_magenta', end='')
-        print()
+        print() 
         for card in cards:
             if card.rank == '10':
                 cprint(Style.BRIGHT + f'|{card.rank}   |  ', 'black' ,'on_light_magenta',end='')
@@ -187,6 +186,6 @@ class Durak:
 
             
 
-# deck_instance = Deck()
+deck_instance = Deck()
 # Durak(deck_instance.create_deck_for_player(), deck_instance.create_deck_for_player(),deck_instance.deck ,deck_instance)
-Card('♥','7')
+# Card(deck_instance.deck)

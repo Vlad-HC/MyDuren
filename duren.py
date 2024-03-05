@@ -10,9 +10,9 @@ class Card:
         self.rank = rank
         self.suit = suit
 
-    def create_card():
+    def print_cards(deck):
         # Create six cards
-        cards = [Card(rank, suit, value) for rank, suit, value in {###}]
+        cards = [Card(rank, suit, value) for rank, suit, value in deck]
         # Print the cards in a row
         for card in cards:cprint(Style.BRIGHT + f' _____   ','black' ,'on_light_magenta',end='')
         print()
@@ -80,21 +80,27 @@ class Deck:
             player_deck.append(random_card)
         return player_deck
 
+    def take_cards_from_deck(self,deck):
+        if len(deck) < 6:
+            for i in range(6 - len(deck) ):
+                card = random.choice(self.game_deck.deck)
+                self.game_deck.deck.remove(card)
+                self.deck.append(card)
+        return self.player_deck
 
 class Player :
-    def __init__(self,name: str, game_deck):
-        self.name = name 
+    def __init__(self,player_deck, game_deck):
         self.game_deck = game_deck
-        self.player_deck = game_deck.create_deck_for_player()
+        self.player_deck = player_deck
 
 
     def take_cards_from_deck(self):
         if len(self.player_deck) < 6:
-            for i in range(6 - len(self.player_deck) ):
-                card = random.choice(self.game_deck.deck)
-                self.game_deck.deck.remove(card)
+            for i in range(6 - len(self.player_deck)):
+                card = random.choice(self.game_deck)
+                self.game_deck.remove(card)
                 self.player_deck.append(card)
-        return self.player_deck
+            return self.player_deck
     
 
     def attack(self):
@@ -120,72 +126,97 @@ class Durak:
         self.odboy = []
 
 
-        print(f'{self.first_name} --> chodit {first_deck}')
-        print(f'{self.second_name} -->{second_deck}')
-        print('cards in deck -->', len(game_deck))
+        print(f'{self.first_name}')
+        Card.print_cards(first_deck)
+
+        print(f'\n{self.second_name}')
+        Card.print_cards(second_deck)
+        
+        print('\ncards in deck -->', len(game_deck))
 
         while len(first_deck)!=0  or len(second_deck) !=0 and len(game_deck) != 0:     
-            command = input("attack/defense/take-cards/end-choda: ")
-            if command not in ["a", "d", "t"]:
-                print('wrong command')
+            command = input("\nattack(a)/defense(d)/take-cards(t)/end_of_turn(e): ")
+            if command not in ["a", "d", "t",'e']:
+                print('\nwrong command')
 
             elif command == 'a':
                 try:
-                    card = int(input(f'choose card to attack(0,1,2...): '))
+                    card = int(input(f'\nchoose card to attack(1,2,3..): '))
                     att_card = first_deck.pop(card-1)
-                    print(f'{self.first_name}, attack -->',att_card)
+                    att_cards =[]
+                    att_cards.append(att_card)
+                    print(f'\n{self.first_name}, attack -->'),Card.print_cards(att_cards)
                 except IndexError:
                     print('card index out of range please write correct index of card! ')
-            
+                except ValueError:
+                    print('card index out of range please write correct index of card!')
             # command = input("attack/defense/take-cards/end-choda: ")
 
 
             elif command == 'd':
-
+                
                 try:
-                    
-                    card = int(input(f'choose card to defense(0,1,2...): '))
+                    card = int(input(f'\nchoose card to defense(1,2,3..): '))
                     def_card = second_deck.pop(card-1)
-                    print(f'{self.second_name}, defense -->',def_card)
+                    def_cards= []
+                    def_cards.append(def_card)
+                    # print(f'{self.second_name}, defense -->')
+                    Card.print_cards(def_cards)
                     result = durak_ex.compare_cards(att_card,def_card)
                 except IndexError:
-                    print('card index out of range please write correct index of card! ')
+                    print('card index out of range please write correct index of card!')
+                except ValueError:
+                    print('card index out of range please write correct index of card!')
 
-                    while result not in [0,1,2]:
-                        ...
+
+                    
                 while result != 2 and command != 't':
-                    print('imposible to bito')
+                    print('\nimposible')
                     second_deck.append(def_card)
-                    print(second_deck)
-                        
-                    card = int(input(f'choose card to defense(0,1,2...): '))
-                    def_card = second_deck.pop(card-1)
-                    result = durak_ex.compare_cards(att_card,def_card)
-                    command = input("attack/defense/take-cards/end-choda: ")
+                    Card.print_cards(second_deck)
+                    try:
+                        card = int(input(f'\nchoose card to defense(1,2,3..): '))
+                        def_card = second_deck.pop(card-1)
+                        result = durak_ex.compare_cards(att_card,def_card)
+                        command = input("\nenter/take-cards to continue: ")
+                    except ValueError:
+                        print('card index out of range please write correct index of card!')
 
 
                 if result  == 2:
-                    print(att_card, '<', def_card)
-                    print('✔')
+                    print('\n',att_card, '<', def_card)
+                    print('\n✔')
                 
 
             if command == 't':
                 try:
-                    cards = att_card or def_card or att_card,def_card
-                    buff = []
-                    buff.append(cards)
+                    # cards = (att_card) or (att_card),(def_card)
+                    buff = [(att_card),(def_card)]
+                    # buff.append(cards)
                     for  i in buff:
                         second_deck.append(i)
-                    print(second_deck)
+                    print('\n')
+                    Card.print_cards(first_deck)
+                    print('\n')
+                    Card.print_cards(second_deck)
                 except UnboundLocalError: 
                     print('you cant do this')
                 
 
-            if command == 'end-choda':
-                ...
+            if command == 'e':
+                # first_deck.remove(att_card)
+                # second_deck.remove(def_card)
+                # odboy.append(att_card,def_card)
+                Player(first_deck,deck_instance.deck).take_cards_from_deck()
+                Player(second_deck,deck_instance.deck).take_cards_from_deck()
+                Card.print_cards(first_deck)
+                print(f'\n{self.first_name}')
+                Card.print_cards(second_deck)
+                print(f'\n{self.second_name}')
+
 
             
-
+odboy = []
 deck_instance = Deck()
-# Durak(deck_instance.create_deck_for_player(), deck_instance.create_deck_for_player(),deck_instance.deck ,deck_instance)
+Durak(deck_instance.create_deck_for_player(), deck_instance.create_deck_for_player(),deck_instance.deck ,deck_instance)
 # Card(deck_instance.deck)

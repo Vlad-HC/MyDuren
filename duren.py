@@ -3,7 +3,7 @@ from itertools import product
 import math
 from termcolor import colored, cprint
 from colorama import init, Fore, Back, Style
-
+from name_print import name
 
 class Card:
     def __init__(self,rank,suit,value) -> None:
@@ -125,14 +125,15 @@ class Durak:
         self.players = [self.first_name, self.second_name]
         self.odboy = []
 
-
-        print(f'{self.first_name}')
+        # cprint(Style.BRIGHT + f'{self.first_name}','red','on_light_blue')
+        name(self.first_name)
         Card.print_cards(first_deck)
 
-        print(f'\n{self.second_name}')
+        name(self.second_name)
         Card.print_cards(second_deck)
+        name('cards in deck -->'),name(len(game_deck))
         
-        print('\ncards in deck -->', len(game_deck))
+        # cprint(f'\ncards in deck -->{len(game_deck)}','cyan','on_green')
 
         while len(first_deck)!=0  or len(second_deck) !=0 and len(game_deck) != 0:     
             command = input("\nattack(a)/defense(d)/take-cards(t)/end_of_turn(e): ")
@@ -209,10 +210,11 @@ class Durak:
                 # odboy.append(att_card,def_card)
                 Player(first_deck,deck_instance.deck).take_cards_from_deck()
                 Player(second_deck,deck_instance.deck).take_cards_from_deck()
+                name(self.first_name)
                 Card.print_cards(first_deck)
-                print(f'\n{self.first_name}')
+                name(self.second_name)
                 Card.print_cards(second_deck)
-                print(f'\n{self.second_name}')
+
 
 
             

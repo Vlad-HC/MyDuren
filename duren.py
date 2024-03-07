@@ -80,7 +80,7 @@ class Deck:
             player_deck.append(random_card)
         return player_deck
 
-    def take_cards_from_deck(self,deck):
+    def take_cards_from_deck(self,deck:list):
         if len(deck) < 6:
             for i in range(6 - len(deck) ):
                 card = random.choice(self.game_deck.deck)
@@ -89,10 +89,10 @@ class Deck:
         return self.player_deck
 
 class Player :
-    def __init__(self,player_deck, game_deck,name):
+    def __init__(self,player_deck: list, game_deck: list):
         self.game_deck = game_deck
         self.player_deck = player_deck
-        self.name = name
+        
 
 
     def take_cards_from_deck(self):
@@ -104,133 +104,144 @@ class Player :
             return self.player_deck
     
     def attack(self):
-        global att_card
-        card = int(input(f'\nchoose card to attack(1,2,3..): '))
+        att_card = None
+        Card.print_cards(self.player_deck)
+        card = int(input(Style.BRIGHT+ Fore.GREEN + f'\nchoose card to attack(1,2,3..): '))
         att_card = self.player_deck.pop(card-1)
-        att_cards =[]
-        att_cards.append(att_card)
-        print(f'\n{self.name}, attack -->'),Card.print_cards(att_cards)
+        att_cards =[att_card]
+        Card.print_cards(att_cards)
+        return att_card
     
     def defense(self):
-        global def_card
-        global result
-        card = int(input(f'\nchoose card to defense(1,2,3..): '))
+        def_card = None
+        Card.print_cards(self.player_deck)
+        card = int(input(Style.BRIGHT+ Fore.GREEN + f'\nchoose card to defense(1,2,3..): '))
         def_card = self.player_deck.pop(card-1)
-        def_cards= []
-        def_cards.append(def_card)
+        def_cards= [def_card]
         Card.print_cards(def_cards)
+        return def_card
+    
+    def result(att_card,def_card):
+        result = None
         result = deck_instance.compare_cards(att_card,def_card)
-        
-
-    def take_cards():
-        ...
-
+        return result
+    
 class Durak:
 
-    def __init__(self,first_deck: list, second_deck: list, game_deck: list ,durak_ex):
+    def __init__(self,first_deck: list, second_deck: list, game_deck: list ,deck_ex: Deck):
         self.game_deck = game_deck
         self.first_deck = first_deck
         self.second_deck = second_deck
-        self.first_name = input('write your name: ')
-        self.second_name = input('write your name: ')
-        self.durak_ex = durak_ex
+        self.first_name = input(Fore.BLUE + 'write your name: ')
+        self.second_name = input(Fore.BLUE + 'write your name: ')
+        self.deck_ex = deck_ex
         self.players = [self.first_name, self.second_name]
         self.odboy = []
-        def_card = None
-        att_card = None
-        result = None
-        # cprint(Style.BRIGHT + f'{self.first_name}','red','on_light_blue')
+        att_quantity=[]
         name(self.first_name)
         Card.print_cards(first_deck)
 
         name(self.second_name)
         Card.print_cards(second_deck)
         name('cards in deck -->'),name(len(game_deck))
-        
+        att_card = None
+        def_card = None
 
         while len(first_deck)!=0  or len(second_deck) !=0 and len(game_deck) != 0:     
-            command = input("\nattack(a)/defense(d)/take-cards(t)/end_of_turn(e): ")
+            command = input(Style.BRIGHT+ Fore.CYAN + "\nattack(a)/defense(d)/take-cards(t)/end_of_turn(e): ")
             if command not in ["a", "d", "t",'e']:
-                print('\nwrong command')
+                cprint('\nwrong command','red')
 
-            elif command == 'a':
+            if command == 'a':
                 try:
-                    Player(first_deck,game_deck,self.first_name).attack()
-                    
+                    att_quantity.append(1)
+                    if len(att_quantity)%2 == 1:    
+                        att_card = Player(first_deck,game_deck).attack()
+                    else:
+                        att_card = Player(second_deck,game_deck).attack()
+
                 except IndexError:
-                    print('card index out of range please write correct index of card! ')
+                    cprint('card index out of range please write correct index of card! ','red')
+                    att_quantity.append(1)
                 except ValueError:
-                    print('card index out of range please write correct index of card!')
+                    cprint('card index out of range please write correct index of card!','red')
+                    att_quantity.append(1)
 
 
             elif command == 'd':
-                
+                if att_card == None:
+                    print('You cant do this')
+                    continue
+
                 try:
-                    # card = int(input(f'\nchoose card to defense(1,2,3..): '))
-                    # def_card = second_deck.pop(card-1)
-                    # def_cards= []
-                    # def_cards.append(def_card)
-
-                    # Card.print_cards(def_cards)
-                    # result = durak_ex.compare_cards(att_card,def_card)
-                    Player(second_deck, game_deck, self.second_name).defense()
-                    print(att_card,def_card,result)
+                    def_card = Player(second_deck, game_deck).defense()
+                    result = self.result(att_card,def_card)
                 except (IndexError,ValueError):
-                    print('card index out of range please write correct index of card!')
-
+                    cprint('card index out of range please write correct index of card!','red')
+                    continue
 
                     
                 while result != 2 and command != 't':
-                    print('\nimposible')
+                    cprint('\nimposible',"red")
                     second_deck.append(def_card)
                     Card.print_cards(second_deck)
                     try:
                         card = int(input(f'\nchoose card to defense(1,2,3..): '))
                         def_card = second_deck.pop(card-1)
-                        result = durak_ex.compare_cards(att_card,def_card)
+                        result = deck_ex.compare_cards(att_card,def_card)
                         command = input("\nenter/take-cards to continue: ")
                     except ValueError:
-                        print('card index out of range please write correct index of card!')
+                        cprint('card index out of range please write correct index of card!','red')
                         continue
 
                 if result  == 2:
                     print('\n',att_card, '<', def_card)
-                    print('\n✔')
-                
+                    cprint('  ✔  ','light_green','on_green')
+                    att_card=None
+                    def_card=None
+                    
 
             if command == 't':
                 
-                    # cards = (att_card) or (att_card),(def_card)
                 if  att_card == None :
                     print('you cant do this')
                     continue
                 if def_card == None:
-                    buff = [(att_card)]
+                    if att_card != None:
+                        buff = [(att_card)]
                 else:
                     buff = [(att_card),(def_card)]
                 for  i in buff:
-                    second_deck.append(i)
+                    if len(att_quantity)%2 == 1:
+                        second_deck.append(i)
+                    else:
+                        first_deck.append(i)
                 print('\n')
                 Card.print_cards(first_deck)
                 print('\n')
-                Card.print_cards(second_deck)
-                
-
-            if command == 'e':
-                # first_deck.remove(att_card)
-                # second_deck.remove(def_card)
-                # odboy.append(att_card,def_card)
-                Player(first_deck,deck_instance.deck).take_cards_from_deck()
-                Player(second_deck,deck_instance.deck).take_cards_from_deck()
-                name(self.first_name)
-                Card.print_cards(first_deck)
-                name(self.second_name)
                 Card.print_cards(second_deck)
                 att_card = None
-                def_card = None
+                def_card= None
+    
+            if command == 'e':
+                if att_card != None:
+                    cprint("You cant do this",'red')
+                    continue
+                else:
+                    Player(first_deck,deck_instance.deck).take_cards_from_deck()
+                    Player(second_deck,deck_instance.deck).take_cards_from_deck()
+                    name(self.first_name)
+                    Card.print_cards(first_deck)
+                    name(self.second_name)
+                    Card.print_cards(second_deck)
+                    att_card = None
+                    def_card = None
+    @staticmethod
+    def result(att_card,def_card):
+        result = None
+        result = deck_instance.compare_cards(att_card,def_card)
+        return result
 
-            
 odboy = []
 deck_instance = Deck()
 Durak(deck_instance.create_deck_for_player(), deck_instance.create_deck_for_player(),deck_instance.deck ,deck_instance)
-# Card(deck_instance.deck)

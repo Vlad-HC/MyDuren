@@ -5,10 +5,19 @@ from termcolor import colored, cprint
 from colorama import init, Fore, Back, Style
 from name_print import name
 
+def print_card_middle(symbol, color):
+    cprint(Style.BRIGHT + f'|  ', 'black', 'on_light_magenta',end='')
+    cprint(Style.BRIGHT + symbol, color ,'on_light_magenta',end='')
+    cprint(Style.BRIGHT + f'  |  ', 'black', 'on_light_magenta',end='')
+        
+        
+        
 class Card:
     def __init__(self,rank,suit,value) -> None:
         self.rank = rank
         self.suit = suit
+
+
 
     def print_cards(deck):
         # Create six cards
@@ -31,7 +40,8 @@ class Card:
             suit_color= 'black'
             if card.suit in ['♥','♦️']:
                 suit_color = 'red'
-            cprint(Style.BRIGHT + f'|  {card.suit}  |  ', suit_color ,'on_light_magenta',end='')
+            print_card_middle(card.suit, suit_color)
+            # cprint(Style.BRIGHT + f'|  {card.suit}  |  ', suit_color ,'on_light_magenta',end='')
         print()
 
         for card in cards:cprint(Style.BRIGHT + '|     |  ','black' ,'on_light_magenta', end='')
@@ -58,6 +68,7 @@ class Deck:
 
         self.deck = [(rank, suit, self.ranks_values[rank]) for rank, suit in product(ranks, suits)]
         random.shuffle(self.deck)
+        cool_suit = random.choice(suits)
 
     def compare_cards(self, card1, card2):
         _, suit1, value1 = card1
@@ -137,7 +148,7 @@ class Durak:
         self.deck_ex = deck_ex
         self.players = [self.first_name, self.second_name]
         self.odboy = []
-        att_quantity=[]
+        att_quantity = []
         name(self.first_name)
         Card.print_cards(first_deck)
 

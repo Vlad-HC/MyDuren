@@ -12,3 +12,18 @@ def name(name):
         print('\r')
         cprint(Style.BRIGHT + ' ' + f'{name}'+ ' ',text_color,background_color)
         print('\r')
+        
+def print_card_middle(symbol, color):
+    cprint(Style.BRIGHT + f'|  ', 'black', 'on_light_magenta',end='')
+    cprint(Style.BRIGHT + symbol, color ,'on_light_magenta',end='')
+    cprint(Style.BRIGHT + f'  |  ', 'black', 'on_light_magenta',end='')
+
+def print_cool_suit(suit):
+    if suit in ['♥','♦️']:
+        suitcolor = 'red'
+        print('\r') 
+        cprint(suit ,f'{suitcolor}')
+    else:
+        print('\r') 
+        cprint(suit ,'black')
+

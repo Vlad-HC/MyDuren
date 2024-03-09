@@ -90,10 +90,12 @@ class Card:
         print()
 
         for card in cards:cprint(Style.BRIGHT + ' ‾‾‾‾‾   ', 'black' ,'on_light_magenta',end='')
-
-
-Card.create_card()
-
+l = 0
+inp = int(input())
+if inp == 1:
+    l = l+1
+    l= l+1
+print(l)
 
 
 

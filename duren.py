@@ -6,6 +6,7 @@ from colorama import init, Fore, Back, Style
 from name_print import name
 from name_print import print_card_middle        
 from name_print import print_cool_suit  
+import os, sys
         
         
 class Card:
@@ -32,7 +33,7 @@ class Card:
 
         for card in cards:
             suit_color= 'black'
-            if card.suit in ['♥','♦️']:
+            if card.suit in ['♥','♦']:
                 suit_color = 'red'
             print_card_middle(card.suit, suit_color)
         print()
@@ -56,7 +57,7 @@ class Deck:
             '6': 6, '7': 7, '8': 8, '9': 9, '10': 10,
             'J': 11, 'Q': 12, 'K': 13, 'A': 14
         }
-        suits = ['♥', '♦️', '♣️', '♠️']
+        suits = ['♥', '♦', '♣', '♠']
         ranks = list(self.ranks_values)
 
         self.deck = [(rank, suit, self.ranks_values[rank]) for rank, suit in product(ranks, suits)]
@@ -172,7 +173,7 @@ class Durak:
             else:
                 cprint(f'\n{self.first_name} turn', 'light_green')    
             command = input(Style.BRIGHT+ Fore.CYAN + "\nattack(a)/defense(d)/take-cards(t)/end_of_turn(e): ")
-            if command not in ["a", "d", "t",'e']:
+            if command not in ["a", "d", "t",'e','q']:
                 cprint('\nwrong command','red')
 
             if command == 'a':
@@ -213,6 +214,7 @@ class Durak:
 
                 while result != 2 and command != 't':
                     cprint('\nimposible',"red")
+                    command = input("\nenter to continue/take-cards(t) : ")
                     if att_quantity % 2 == 1:
                         if def_card not in second_deck:
                             second_deck.append(def_card)
@@ -221,14 +223,14 @@ class Durak:
                         if def_card not in first_deck:
                             first_deck.append(def_card)
                         Card.print_cards(first_deck)
-                    try:
-                        card = int(input(f'\nchoose card to defense(1,2,3..): '))
-                        def_card = second_deck.pop(card-1)
-                        result = deck_ex.compare_cards(att_card,def_card)
-                        command = input("\nenter to continue/take-cards(t) : ")
-                    except ValueError:
-                        cprint('card index out of range please write correct index of card!','red')
-                        continue
+                    if command!='t':
+                        try:
+                            card = int(input(f'\nchoose card to defense(1,2,3..): '))
+                            def_card = second_deck.pop(card-1)
+                            result = deck_ex.compare_cards(att_card,def_card)
+                        except ValueError:
+                            cprint('card index out of range please write correct index of card!','red')
+                            continue
 
                 if result  == 2:
                     print('\n',att_card, '<', def_card)
@@ -272,6 +274,10 @@ class Durak:
                     print_cool_suit(deck_instance.cool_suit)
                     att_card = None
                     def_card = None
+            if command == 'q':
+                print('GG')
+                os.system("start https://www.youtube.com/watch?v=dQw4w9WgXcQ")
+                quit()                
     @staticmethod
     def result(att_card,def_card):
         result = None

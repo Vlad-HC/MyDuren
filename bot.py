@@ -1,0 +1,9 @@
+class BotDanil:
+    def __init__(self) -> function:
+        ...
+
+    def atack():
+        ...
+    def defense():
+        ...
+    

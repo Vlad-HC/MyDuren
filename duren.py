@@ -9,6 +9,18 @@ from name_print import print_cool_suit
 import os, sys
         
         
+class BotDanil:
+    def __init__(self) -> function:
+        ...
+
+    def attack():
+        ...
+
+    def defense():
+        ...
+    
+
+
 class Card:
     def __init__(self,rank,suit,value) -> None:
         self.rank = rank
@@ -18,17 +30,17 @@ class Card:
         # Create six cards
         cards = [Card(rank, suit, value) for rank, suit, value in deck]
         # Print the cards in a row
-        for card in cards:cprint(Style.BRIGHT + f' _____   ','black' ,'on_light_magenta',end='')
+        for card in cards:cprint(Style.BRIGHT + f' _____   ','black' ,'on_light_yellow',end='')
         print()
 
         for card in cards:
             if card.rank=='10':
-                cprint(Style.BRIGHT + f'|   {card.rank}|  ', 'black' ,'on_light_magenta',end='')
+                cprint(Style.BRIGHT + f'|   {card.rank}|  ', 'black' ,'on_light_yellow',end='')
             else:
-                cprint(Style.BRIGHT + f'|    {card.rank}|  ', 'black' ,'on_light_magenta',end='')
+                cprint(Style.BRIGHT + f'|    {card.rank}|  ', 'black' ,'on_light_yellow',end='')
         print()
 
-        for card in cards:cprint(Style.BRIGHT + '|     |  ','black' ,'on_light_magenta', end='')
+        for card in cards:cprint(Style.BRIGHT + '|     |  ','black' ,'on_light_yellow', end='')
         print()
 
         for card in cards:
@@ -38,16 +50,16 @@ class Card:
             print_card_middle(card.suit, suit_color)
         print()
 
-        for card in cards:cprint(Style.BRIGHT + '|     |  ','black' ,'on_light_magenta', end='')
+        for card in cards:cprint(Style.BRIGHT + '|     |  ','black' ,'on_light_yellow', end='')
         print() 
         for card in cards:
             if card.rank == '10':
-                cprint(Style.BRIGHT + f'|{card.rank}   |  ', 'black' ,'on_light_magenta',end='')
+                cprint(Style.BRIGHT + f'|{card.rank}   |  ', 'black' ,'on_light_yellow',end='')
             else:
-                cprint(Style.BRIGHT + f'|{card.rank}    |  ', 'black' ,'on_light_magenta',end='')
+                cprint(Style.BRIGHT + f'|{card.rank}    |  ', 'black' ,'on_light_yellow',end='')
         print()
 
-        for card in cards:cprint(Style.BRIGHT + ' ‾‾‾‾‾   ', 'black' ,'on_light_magenta',end='')
+        for card in cards:cprint(Style.BRIGHT + ' ‾‾‾‾‾   ', 'black' ,'on_light_yellow',end='')
 
 class Deck:
     deck: list[tuple[str,str,int]]
@@ -233,7 +245,7 @@ class Durak:
                             continue
 
                 if result  == 2:
-                    print('\n',att_card, '<', def_card)
+                    # print('\n',att_card, '<', def_card)
                     cprint('  ✔  ','light_green','on_green')
                     odboy.append(att_card)
                     odboy.append(def_card)

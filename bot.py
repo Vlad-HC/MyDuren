@@ -2,7 +2,7 @@ import random
 
 class BotDanil:
     def __init__(self,player_deck:list) -> None:
-        names = ['Danyl','Filip','Bartosz','Dima','Monika','Kateryna',]
+        names = ['Danyl','Filip','Bartosz','Dima','Monika','Kateryna']
         self.name = random.choice(names)
         self.player_deck = player_deck
     

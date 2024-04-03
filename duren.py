@@ -197,7 +197,7 @@ class Durak:
         att_card = None
         def_card = None
 
-        while len(first_deck)!=0  or len(second_deck) !=0 and len(game_deck) != 0:
+        while (len(first_deck)!=0  or len(second_deck) !=0) and len(game_deck) != 0:
 
             if att_quantity % 2 == 1:
                 cprint(f'\n{self.second_name} turn', 'light_green')    

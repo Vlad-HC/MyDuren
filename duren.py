@@ -3,22 +3,24 @@ from itertools import product
 from termcolor import colored, cprint
 from colorama import init, Fore, Back, Style
 from name_print import name,print_card_middle,print_cool_suit
-import os, sys
+import os, sys, time
+
 
 class BotDanil:
     def __init__(self,player_deck:list) -> None:
-        names = ['Danyl','Filip','Bartosz','Dima','Monika','Kateryna',]
+        names = ['Danil','Filip','Bartosz','Dima','Monika','Kateryna']
         self.name = random.choice(names)
         self.player_deck = player_deck
     
     def bot_attack(self):
         att_card = None
-        choice = random.choice(self.player_deck)
+        choice = random.choice(self.player_deck)#fix<----------------
         card = self.player_deck.index(choice)
         att_card = self.player_deck.pop(card)
         att_cards = [att_card]
         print('\n')
         Card.print_cards(att_cards)
+        time.sleep(1)
         return att_card
     
     def bot_defense(self):
@@ -29,7 +31,10 @@ class BotDanil:
         def_cards= [def_card]
         print('\n')
         Card.print_cards(def_cards)
+        time.sleep(1)
         return def_card
+   
+
 class Card:
     def __init__(self,rank,suit,value) -> None:
         self.rank = rank
@@ -109,7 +114,21 @@ class Deck:
         
         return 0
         
-            
+    # def compare_all_cards(self,player_deck:list): <------------------------------------------------- write
+    #     for i in range(0, (len(player_deck)-1)):
+    #         card1 = player_deck[i if i%2==1]
+    #         card2 = player_deck[i%2!=1]
+    #         result = deck_instance.compare_cards(card1,card2)   
+    #         if result == 2: 
+    #             ...
+
+
+
+
+
+
+
+
     def create_deck_for_player(self): # <-- create deck for player 
         player_deck = []
         for i in range(6):
@@ -188,11 +207,11 @@ class Durak:
 
         if self.choice == '1':
             name(self.second_name)
-            name('cards in opponent deck -->'),name(len(second_deck))
+            name(f'cards in opponent deck --> {len(second_deck)}')
         else:
             name(self.second_name)
             Card.print_cards(second_deck)
-        name('cards in game deck -->'),name(len(game_deck))
+        name(f'cards in game deck --> {len(game_deck)}')
         print_cool_suit(deck_instance.cool_suit)
         att_card = None
         def_card = None
@@ -207,7 +226,7 @@ class Durak:
             if command not in ["a", "d", "t",'e','q']:
                 cprint('\nwrong command','red')
                 
-            if self.choice == '2':
+            if self.choice == '2':#<--------------------------------------------------------------
                 if command == 'a':
                     try:
                         if att_card != None:
@@ -318,6 +337,7 @@ class Durak:
                         if att_quantity % 2 == 1:    
                             att_card = Player(first_deck,game_deck).attack()
                         else:
+                            time.sleep(1)
                             att_card = BotDanil(second_deck).bot_attack()
 
                     except IndexError:
@@ -336,6 +356,7 @@ class Durak:
 
                     try:
                         if att_quantity % 2 == 1:
+                            time.sleep(1)
                             def_card = BotDanil(second_deck).bot_defense()
                         else:
                             def_card = Player(first_deck, game_deck).defense()
@@ -385,8 +406,11 @@ class Durak:
                     if def_card == None:
                         if att_card != None:
                             buff = [(att_card)]
-                    else:
+                    elif def_card not in second_deck:
                         buff = [(att_card),(def_card)]
+                    else:
+                        buff = [(att_card)]
+                    
                     for  i in buff:
                         if att_quantity % 2 == 1:
                             second_deck.append(i)
@@ -406,6 +430,7 @@ class Durak:
                         Player(second_deck,deck_instance.deck).take_cards_from_deck()
                         name(self.first_name)
                         Card.print_cards(first_deck)
+                        time.sleep(1)
                         name(self.second_name)
                         Card.print_cards(second_deck)
                         print_cool_suit(deck_instance.cool_suit)

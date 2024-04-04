@@ -91,16 +91,29 @@ class Card:
 
         for card in cards:cprint(Style.BRIGHT + ' ‾‾‾‾‾   ', 'black' ,'on_light_magenta',end='')
 l = 0
-inp = int(input())
-if inp == 1:
-    l = l+1
-    l= l+1
-print(l)
+# inp = int(input())
+# if inp == 1:
+#     l = l+1
+#     l= l+1
+# print(l)
+ranks = {
+            '6': 6, '7': 7, '8': 8, '9': 9, '10': 10,
+            'J': 11, 'Q': 12, 'K': 13, 'A': 14
+        }
+min_rank = min(ranks.values())
+max_rank = max(ranks.values())
+desired_value = 10  # Значення, яке ви шукаєте
 
+for key, value in ranks.items():
+    if value == desired_value:
+        print("Ключ для значення", desired_value, ":", key)
 
+# Отримуємо відповідні ключі для мінімального та максимального значення
+# min_key = [key for key, value in ranks.items() if value == min_rank][0]
+# max_key = [key for key, value in ranks.items() if value == max_rank][0]
 
-
-
+print(desired_value)
+print(ranks.items())
 
 
 

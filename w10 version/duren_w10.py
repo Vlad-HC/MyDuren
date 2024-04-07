@@ -29,6 +29,8 @@ class BotDanil:
             result = deck_instance.compare_cards(self.player_deck[i],att_card)
             if result == 1:
                 choice = self.player_deck[i]
+                choices = [self.player_deck[i]]
+                choice = deck_instance.min_card(choices)
         card = self.player_deck.index(choice)
         def_card = self.player_deck.pop(card)
         def_cards= [def_card]

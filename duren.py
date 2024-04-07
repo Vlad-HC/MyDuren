@@ -26,11 +26,13 @@ class BotDanil:
     
     def bot_defense(self,att_card):
         def_card = None
+        choices = [] 
         for i in range(0,len(self.player_deck)):
-            choice = self.player_deck[0]
+            choice = None
             result = deck_instance.compare_cards(self.player_deck[i],att_card)
             if result == 1:
-                choice = self.player_deck[i]
+                choices.append(self.player_deck[i]) 
+                choice = deck_instance.min_card(choices)
         card = self.player_deck.index(choice)
         def_card = self.player_deck.pop(card)
         def_cards= [def_card]
@@ -100,11 +102,6 @@ class Deck:
             if result == 1:
                 choice = player_deck[i]       
         return choice
-
-
-
-
-
 
 
     def create_deck_for_player(self): # <-- create deck for player 

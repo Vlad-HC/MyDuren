@@ -4,8 +4,8 @@ from colorama import init, Fore, Back, Style
 
 
 def name(name):
-        elm1 = ['red','green','yellow','blue','magenta']
-        elm2 = ['on_white','on_light_grey','on_light_green','on_light_magenta','on_light_cyan']
+        elm1 = ['red']
+        elm2 = ['on_light_grey']
         text_color = random.choice(elm1)
         background_color = random.choice(elm2)
         print('\r')

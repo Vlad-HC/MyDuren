@@ -26,14 +26,19 @@ class BotDanil:
     
     def bot_defense(self,att_card):
         def_card = None
-        choices = [] 
+        choices = []
+        card = None
         for i in range(0,len(self.player_deck)):
-            choice = None
             result = deck_instance.compare_cards(self.player_deck[i],att_card)
             if result == 1:
-                choices.append(self.player_deck[i]) 
+                choice = self.player_deck[i]
+                choices.append(choice)
                 choice = deck_instance.min_card(choices)
-        card = self.player_deck.index(choice)
+        if card == None:
+            rndcrd = random.choice(self.player_deck)
+            card = self.player_deck.index(rndcrd)
+        else:
+            card = self.player_deck.index(choice)
         def_card = self.player_deck.pop(card)
         def_cards= [def_card]
         print('\n')
@@ -167,6 +172,7 @@ class Durak:
         self.game_deck = game_deck
         self.first_deck = first_deck
         self.second_deck = second_deck
+        os.system("cls")
         self.choice = input(Fore.BLUE + '\n1 - play with bot or 2 - play with friend :')
         self.first_name = input(Fore.BLUE + 'write your name: ')
         if self.choice == '1':
@@ -351,19 +357,24 @@ class Durak:
                         cprint('\nimposible',"red")
                         if att_quantity % 2 != 1:
                             command = input("\nenter to continue/take-cards(t) : ")
+
+                            if def_card not in first_deck:
+                                first_deck.append(def_card)
                         else :
                             command = 't'
-                        if att_quantity % 2 == 1:
-                            if def_card in second_deck:
-                                second_deck.remove(def_card)
-                        else:
-                            if def_card in first_deck:
-                                first_deck.remove(def_card)
+                        # if att_quantity % 2 == 1:
+                        #     if def_card in second_deck:
+                        #         second_deck.remove(def_card)
+                        # else:
+                        #     if def_card in first_deck:
+                        #         first_deck.remove(def_card)
+                        
                         if command!='t':
                             try:
+                                
                                 Card.print_cards(first_deck)
                                 card = int(input(f'\nchoose card to defense(1,2,3..): '))
-                                def_card = second_deck.pop(card-1)
+                                def_card = first_deck.pop(card-1)
                                 result = deck_ex.compare_cards(att_card,def_card)
                             except ValueError:
                                 cprint('card index out of range please write correct index of card!','red')
@@ -396,9 +407,11 @@ class Durak:
                     
                     for  i in buff:
                         if att_quantity % 2 == 1:
-                            second_deck.append(i)
+                            if i not in second_deck:
+                                second_deck.append(i)
                         else:
-                            first_deck.append(i)
+                            if i not in first_deck:
+                                first_deck.append(i)
                     att_quantity = att_quantity + 1 
                     att_card = None
                     def_card= None
@@ -417,7 +430,8 @@ class Durak:
                         Card.print_cards(first_deck)
                         time.sleep(1)
                         name(self.second_name)
-                        Card.print_cards(second_deck)
+                        name(f'cards in opponent deck --> {len(second_deck)}')
+                        name(f'cards in game deck --> {len(game_deck)}')
                         print_cool_suit(deck_instance.cool_suit)
                         att_card = None
                         def_card = None

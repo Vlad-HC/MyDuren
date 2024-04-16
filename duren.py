@@ -34,13 +34,14 @@ class BotDanil:
                 choice = self.player_deck[i]
                 choices.append(choice)
                 choice = deck_instance.min_card(choices)
-        if card == None:
-            rndcrd = random.choice(self.player_deck)
-            card = self.player_deck.index(rndcrd)
-        else:
+        try:
             card = self.player_deck.index(choice)
-        def_card = self.player_deck.pop(card)
-        def_cards= [def_card]
+            def_card = self.player_deck.pop(card)
+            def_cards= [def_card]
+        except UnboundLocalError: 
+            rndcrd = random.choice(self.player_deck)
+            def_card = rndcrd
+            def_cards=[rndcrd]
         print('\n')
         Card.print_cards(def_cards)
         time.sleep(1)

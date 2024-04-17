@@ -198,19 +198,17 @@ class Durak:
         att_card = None
         def_card = None
 
-        if len(first_deck) == 0:
-            cprint(f'winner -------> {self.first_name}')
-        elif len(second_deck) == 0:
-            cprint(f'winner -------> {self.second_name}')
+        
         while (len(first_deck)!=0  and len(second_deck)!=0) or len(game_deck) != 0:
 
 
             if att_quantity % 2 == 1:
                 cprint(f'\n{self.second_name} turn', 'light_green')    
+                command = input(Style.BRIGHT+ Fore.CYAN + "\nattack(a)/defense(d)/take-cards(t)/end_of_turn(e): ")
             else:
                 cprint(f'\n{self.first_name} turn', 'light_green')    
                 command = input(Style.BRIGHT+ Fore.CYAN + "\nattack(a)/defense(d)/take-cards(t)/end_of_turn(e): ")
-            if command not in ["a", "d", "t",'e','q']:
+            if command not in ["a", "d", "t",'e','q',')']:
                 cprint('\nwrong command','red')
                 
             if self.choice == '2':#<--------------------------------------------------------------
@@ -363,12 +361,12 @@ class Durak:
                                 first_deck.append(def_card)
                         else :
                             command = 't'
-                        # if att_quantity % 2 == 1:
-                        #     if def_card in second_deck:
+                        # if att_qf_card in second_deck:
                         #         second_deck.remove(def_card)
                         # else:
                         #     if def_card in first_deck:
-                        #         first_deck.remove(def_card)
+                        #         first_deck.remove(def_card)uantity % 2 == 1:
+                        #     if de
                         
                         if command!='t':
                             try:
@@ -441,6 +439,13 @@ class Durak:
                 print('GG')
                 os.system("start https://www.youtube.com/watch?v=dQw4w9WgXcQ")
                 quit()                
+            if command == ')':
+                os.system("start https://www.youtube.com/watch?v=dQw4w9WgXcQ")
+                name(':3 Never Gonna Give You Up :3')
+        if len(first_deck) == 0:
+            name(f'\nwinner -------> {self.first_name}')
+        elif len(second_deck) == 0:
+            name(f'\nwinner -------> {self.second_name}')
     @staticmethod
     def result(att_card,def_card):
         result = None

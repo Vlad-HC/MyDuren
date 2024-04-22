@@ -204,7 +204,6 @@ class Durak:
 
             if att_quantity % 2 == 1:
                 cprint(f'\n{self.second_name} turn', 'light_green')    
-                command = input(Style.BRIGHT+ Fore.CYAN + "\nattack(a)/defense(d)/take-cards(t)/end_of_turn(e): ")
             else:
                 cprint(f'\n{self.first_name} turn', 'light_green')    
                 command = input(Style.BRIGHT+ Fore.CYAN + "\nattack(a)/defense(d)/take-cards(t)/end_of_turn(e): ")
@@ -361,13 +360,7 @@ class Durak:
                                 first_deck.append(def_card)
                         else :
                             command = 't'
-                        # if att_qf_card in second_deck:
-                        #         second_deck.remove(def_card)
-                        # else:
-                        #     if def_card in first_deck:
-                        #         first_deck.remove(def_card)uantity % 2 == 1:
-                        #     if de
-                        
+
                         if command!='t':
                             try:
                                 

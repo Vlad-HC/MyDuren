@@ -262,6 +262,7 @@ class Durak:
                     while result != 2 and command != 't':
                         cprint('\nimposible',"red")
                         command = input("\nenter to continue/take-cards(t) : ")
+
                         if att_quantity % 2 == 1:
                             if def_card not in second_deck:second_deck.append(def_card)
                             Card.print_cards(second_deck)
@@ -295,12 +296,15 @@ class Durak:
                             cprint('\nwrong command','red')
                             subcommand = input(Style.BRIGHT+ Fore.CYAN + "\nthrow more card <<c>>/end turn <<e>>: ")
                             continue
+                        
+
                         if subcommand == 'c': 
                             try:
+                                subcommand_ = None   
                                 if att_quantity % 2 == 1:  att_card = Player(first_deck, game_deck).throw_card()
                                 else: att_card = Player(first_deck, game_deck).throw_card()
                                 possibility = None
-                                while possibility != 0:
+                                while possibility != 0 and command != 'e':
                                     for i in turn_cards:
                                         result = deck_instance.compare_values_of_cards(att_card,i)
                                         if result == 0: possibility = 0 
@@ -311,12 +315,16 @@ class Durak:
                                         if att_quantity % 2 == 1 and att_card not in first_deck: first_deck.append(att_card)
                                         elif att_quantity % 2 != 1 and att_card not in second_deck: second_deck.append(att_card)
                                         subcommand = input(Style.BRIGHT+ Fore.CYAN + "\nthrow more card <<c>>/end turn <<e>>: ")
-                                        if subcommand != 'e': att_card = Player(first_deck, game_deck).throw_card()
 
-                                if result != 2:    
+                                        if subcommand != 'e': att_card = Player(first_deck, game_deck).throw_card()
+                                        elif subcommand == 'e': 
+                                            command = 'e'
+                                            att_card = None
+
+                                if result != 2 and command != 'e': 
                                     subcommand_ = input(Style.BRIGHT+ Fore.CYAN + "\ndefense <<d>>/take-cards <<t>>: ")
 
-                                while subcommand_ not in ['d','t']:
+                                while subcommand_ not in ['d','t'] and command != 'e':
                                     cprint('\nwrong command','red')
                                     subcommand_ = input(Style.BRIGHT+ Fore.CYAN + "\ndefense <<d>>/take-cards <<t>>: ")
                                     continue
@@ -330,6 +338,8 @@ class Durak:
                                         else:
                                             if def_card != None:first_deck.append(def_card)
                                             def_card = Player(first_deck, game_deck).defense()
+                                        result = self.result(att_card,def_card)
+                                            
                                         if result != 2:
                                             subcommand_ = input(Style.BRIGHT+ Fore.CYAN + "\ndefense <<d>>/take-cards <<t>>: ")
                                         while subcommand_ not in ['d','t']:
@@ -339,7 +349,6 @@ class Durak:
                                             
                                         if subcommand_ == 't':command = 't'
 
-                                        result = self.result(att_card,def_card)
 
                                 if subcommand_ == 't':
                                     command = 't'
@@ -358,7 +367,7 @@ class Durak:
                         
                 if command == 't':
                     buff = []
-                    if  att_card == None :
+                    if  att_card == None and subcommand!='e':
                         print('you cant do this')
                         continue
 
@@ -374,9 +383,11 @@ class Durak:
 
                     for  i in buff:
                         if att_quantity % 2 == 1:
-                            second_deck.append(i)
-
-                        else: first_deck.append(i)
+                            if i not in second_deck:
+                                second_deck.append(i)
+                        else: 
+                            if i not in first_deck:
+                                first_deck.append(i)
 
                     att_quantity = att_quantity + 1 
                     att_card = None
@@ -397,6 +408,7 @@ class Durak:
                         print_cool_suit(deck_instance.cool_suit)
                         att_card = None
                         def_card = None
+                        turn_cards = []
 
 
 

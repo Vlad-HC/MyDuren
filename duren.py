@@ -263,7 +263,6 @@ class Durak:
                         continue
                     try:
                         def_card = self.get_player_for_defense().defense(self.turn_cards)
-
                         result = self.result(att_card,def_card)
                     except (IndexError,ValueError):
                         cprint('card index out of range please write correct index of card!','red')
@@ -315,9 +314,8 @@ class Durak:
                                 att_card = self.get_player().throw_card(self.turn_cards)
                                 possibility = None
                                 while possibility != 0 and command != 'e':
-                                    for i in self.turn_cards:
-                                        result = deck_instance.compare_values_of_cards(att_card,i)
-                                        if result == 0: possibility = 0 
+                                    result = self.check_posibility_for_flip(att_card)
+                                    if result == 0: possibility = 0 
                                            
 
                                     while possibility != 0 and subcommand != 'e':
@@ -372,8 +370,8 @@ class Durak:
                             
                         if def_card != None and def_card not in self.turn_cards: self.turn_cards.append(def_card)
 
-                        # elif subcommand == 'e': command = 'e'
-                        # else: cprint('\nwrong command','red')
+                        if subcommand_ == 'e': command = 'e'
+                        elif subcommand_ not in ['e','t']: cprint('\nwrong command','red')
                          
                 if command == 't':
                     buff = []
@@ -478,7 +476,9 @@ class Durak:
                         if self.att_quantity % 2 == 1: att_card = Player(first_deck,game_deck).attack(self.turn_cards)   
                         else:
                             time.sleep(1)
-                            att_card = BotDanil(second_deck).bot_attack(self.turn_cards)
+                            att_card = BotDanil(second_deck).bot_attack(att_card)
+                            
+                            
 
                     except (IndexError,ValueError):
                         cprint('card index out of range please write correct index of card! ','red')
@@ -491,11 +491,10 @@ class Durak:
                         continue
 
                     try:
-                        if self.att_quantity % 2 == 1:
-                            time.sleep(1)
+                        if self.att_quantity % 2 != 1:
                             def_card = BotDanil(second_deck).bot_defense(att_card)
+                        else: def_card = Player(first_deck,game_deck).defense(att_card)
                             
-                        else: def_card = Player(first_deck, game_deck).defense(self.turn_cards)
                             
                         result = self.result(att_card,def_card)
                     except (IndexError,ValueError):
@@ -599,6 +598,15 @@ class Durak:
     
     def get_player_for_defense(self):
         return Player(self.second_deck if self.att_quantity % 2 else self.first_deck, self.game_deck)
+    
+    # def get_player_or_bot(self):
+    #     if self.att_quantity % 2 == 1:return Player(self.first_deck,self.game_deck)
+    #     else: BotDanil(self.second_deck)
+
+    # def get_player_or_bot_defense(self):
+    #     if self.att_quantity % 2 != 1:return Player(self.first_deck,self.game_deck)
+    #     else: return BotDanil(self.second_deck)
+
     def check_posibility_for_flip(self, att_card):
         for i in self.turn_cards:
             result = deck_instance.compare_values_of_cards(att_card,i)

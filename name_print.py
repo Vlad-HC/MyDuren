@@ -1,8 +1,6 @@
 import random
 from termcolor import colored, cprint
 from colorama import init, Fore, Back, Style
-from pydub.playback import play
-from pydub import AudioSegment
 import os
 
 def name(name):

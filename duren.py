@@ -15,19 +15,20 @@ class BotDanil:
         self.name = random.choice(names)
         self.player_deck = player_deck
     
-    def bot_attack(self):
+    def bot_attack(self,turn_cards:list):
         att_card = None
         choice = deck_instance.min_card(self.player_deck)
         card = self.player_deck.index(choice)
         att_card = self.player_deck.pop(card)
         att_cards = [att_card]
+        turn_cards.append(att_card)
         print('\n')
         playsound('sounds/cardsound.mp3')
         Card.print_cards(att_cards)
         time.sleep(1)
         return att_card
     
-    def bot_defense(self,att_card):
+    def bot_defense(self,att_card,turn_cards:list):
         def_card = None
         choices = []
         card = None
@@ -40,13 +41,14 @@ class BotDanil:
         try:
             card = self.player_deck.index(choice)
             def_card = self.player_deck.pop(card)
-            def_cards= [def_card]
+            def_cards = [def_card]
         except UnboundLocalError: 
             rndcrd = random.choice(self.player_deck)
             def_card = rndcrd
             def_cards=[rndcrd]
         print('\n')
         playsound('sounds/cardsound.mp3')
+        turn_cards.append(def_card)
         Card.print_cards(def_cards)
         time.sleep(1)
         return def_card
@@ -77,7 +79,7 @@ class Deck:
         if suit2 == self.cool_suit and suit1!=suit2:
             return 2         
 
-        if suit1== self.cool_suit and suit2 == self.cool_suit:
+        if suit1 == self.cool_suit and suit2 == self.cool_suit:
             if value1 > value2:
                 return 1
             if value2 > value1:
@@ -165,7 +167,13 @@ class Player :
                 cprint('card index out of range please write correct index of card! ','red')
                 continue
         att_cards =[att_card]
-        turn_cards.append(att_card)
+        result = None
+        for i in turn_cards:
+            result = deck_instance.compare_values_of_cards(att_card,i)
+            if result == 0:
+                break
+        if result == 0 or len(turn_cards) == 0:
+            turn_cards.append(att_card)
         playsound('sounds/cardsound.mp3')
         Card.print_cards(att_cards)
         return att_card
@@ -204,6 +212,7 @@ class Durak:
         self.game_deck = game_deck
         self.first_deck = first_deck
         self.second_deck = second_deck
+        self.odboy = []
         os.system("cls")
         self.choice = input(Fore.BLUE + '\n1 - play with bot or 2 - play with friend :')
         self.first_name = input(Fore.BLUE + 'write your name: ')
@@ -230,6 +239,8 @@ class Durak:
         print_cool_suit(deck_instance.cool_suit)
         att_card = None
         def_card = None
+        # self.att_card = att_card
+        # self.def_card = att_card
 
         
         while (len(first_deck)!=0  and len(second_deck)!=0) or len(game_deck) != 0:
@@ -271,18 +282,24 @@ class Durak:
                     while result != 2 and command != 't':
                         cprint('\nimposible',"red")
                         command = input("\nenter to continue/take-cards(t) : ")
-
+                        ind = self.turn_cards.index(def_card)
+                        self.turn_cards.pop(ind)
                         if self.att_quantity % 2 == 1:
                             if def_card not in second_deck:second_deck.append(def_card)
-                            Card.print_cards(second_deck)
                         else:
                             if def_card not in first_deck:first_deck.append(def_card)
-                            Card.print_cards(first_deck)
-                        if command!='t':
+                            
+                        if command != 't':
                             try:
+                                if self.att_quantity % 2 == 1:
+                                    Card.print_cards(second_deck)
+                                else:
+                                    Card.print_cards(first_deck)
                                 card = int(input(f'\nchoose card to defense(1,2,3..): '))
                                 def_card = second_deck.pop(card-1)
                                 result = deck_ex.compare_cards(att_card,def_card)
+                                if result == 1:
+                                    self.turn_cards.append(def_card)
                             except ValueError:
                                 cprint('card index out of range please write correct index of card!','red')
                                 continue
@@ -290,12 +307,9 @@ class Durak:
                     while result  == 2 and command != 'e' and command != 't':
                         print('\n')
                         cprint('  ✔  ','light_green','on_green')
-                        odboy.append(att_card)
-                        odboy.append(def_card)
-                        if att_card != None and att_card not in self.turn_cards:
-                            self.turn_cards.append(att_card)
-                        if def_card != None and def_card not in self.turn_cards: 
-                            self.turn_cards.append(def_card)
+                        self.odboy.append(att_card)
+                        self.odboy.append(def_card)
+                        
 
                         att_card = None
                         def_card = None
@@ -324,7 +338,7 @@ class Durak:
                                         elif self.att_quantity % 2 != 1 and att_card not in second_deck: second_deck.append(att_card)
                                         subcommand = input(Style.BRIGHT+ Fore.CYAN + "\nthrow more card <<c>>/end turn <<e>>: ")
 
-                                        if subcommand != 'e': att_card = Player(first_deck, game_deck).throw_card(self.turn_cards)
+                                        if subcommand != 'e': att_card = self.get_player().throw_card(self.turn_cards)
                                         elif subcommand == 'e': 
                                             command = 'e'
                                             att_card = None
@@ -349,6 +363,7 @@ class Durak:
                                         result = self.result(att_card,def_card)
                                             
                                         if result != 2:
+                                            cprint('\nYou cant do this' ,'red')
                                             subcommand_ = input(Style.BRIGHT+ Fore.CYAN + "\ndefense <<d>>/take-cards <<t>>: ")
                                         while subcommand_ not in ['d','t']:
                                             cprint('\nwrong command','red')
@@ -370,13 +385,13 @@ class Durak:
                             
                         if def_card != None and def_card not in self.turn_cards: self.turn_cards.append(def_card)
 
-                        if subcommand_ == 'e': command = 'e'#!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                        if subcommand == 'e': command = 'e'#!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
                         elif subcommand_ not in ['e','t']: cprint('\nwrong command','red')
                          
                 if command == 't':
                     buff = []
                     if  att_card == None and subcommand!='e':
-                        print('you cant do this')
+                        cprint('you cant do this','red')
                         continue
                     
                     att_card = None
@@ -385,12 +400,10 @@ class Durak:
                         subcommand = input(Style.BRIGHT+ Fore.CYAN + "\nthrow more card <<c>>/end turn <<e>>: ")
                         if subcommand != 'e':
                             att_card = self.get_player().throw_card(self.turn_cards)
-                            if att_card not in self.turn_cards:self.turn_cards.append(att_card)
                             result = self.check_posibility_for_flip(att_card)
 
                             if result != 0: 
-                                ind = self.turn_cards.index(att_card)
-                                self.turn_cards.pop(ind)
+                                cprint('you cant do this','red')
                                 if self.att_quantity % 2 == 1 and att_card not in first_deck: first_deck.append(att_card)
                                 elif self.att_quantity % 2 != 1 and att_card not in second_deck: second_deck.append(att_card)
 
@@ -412,7 +425,8 @@ class Durak:
                     att_card = None
                     def_card= None
                     command = 'e'
-
+                    subcommand = None
+                    subcommand_ = None
                 if command == 'e':
                     if att_card != None:
                         cprint("You cant do this",'red')
@@ -439,7 +453,10 @@ class Durak:
 
 
 
-                        
+
+
+
+
             if self.choice == '1':#<--------------------------------------------------------------------------
                 if self.att_quantity % 2 == 1 and att_card == None: command = 'a'
                 if command == 'a':
@@ -451,7 +468,7 @@ class Durak:
                         if self.att_quantity % 2 == 1: att_card = Player(first_deck,game_deck).attack(self.turn_cards)   
                         else:
                             time.sleep(1)
-                            att_card = BotDanil(second_deck).bot_attack(att_card)
+                            att_card = BotDanil(second_deck).bot_attack(att_card,self.turn_cards)
                             
                             
 
@@ -467,8 +484,8 @@ class Durak:
 
                     try:
                         if self.att_quantity % 2 != 1:
-                            def_card = BotDanil(second_deck).bot_defense(att_card)
-                        else: def_card = Player(first_deck,game_deck).defense(att_card)
+                            def_card = Player(first_deck,game_deck).defense(self.turn_cards) 
+                        else: def_card = BotDanil(second_deck).bot_defense(att_card,self.turn_cards)
                             
                             
                         result = self.result(att_card,def_card)
@@ -499,13 +516,6 @@ class Durak:
 
                     if result  == 2:
                         self.correct_card()
-                        # print('\n')
-                        # cprint('  ✔  ','light_green','on_green')
-                        # odboy.append(att_card)
-                        # odboy.append(def_card)
-                        # att_card=None
-                        # def_card=None
-                        # command = 'e'
                         
                 if command == 't':
                     self.turn_take_cards()
@@ -526,24 +536,38 @@ class Durak:
             name(f'\nwinner -------> {self.first_name}')
         elif len(second_deck) == 0:
             name(f'\nwinner -------> {self.second_name}')
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     @staticmethod
     def result(att_card,def_card):
         return deck_instance.compare_cards(att_card,def_card)
     
     def turn_take_cards(self):
-        if att_card != None:
+        if self.att_card != None:
             return
 
         print('you cant do this')
-        if def_card == None:
-            if att_card != None:
-                buff = [(att_card)]
-        elif (def_card not in self.second_deck) or (def_card not  in self.first_deck):
-            buff = [(att_card),(def_card)]
-        elif def_card in self.first_deck:
-            buff = [(att_card)]                    
+        if self.def_card == None:
+            if self.att_card != None:
+                buff = [(self.att_card)]
+        elif (self.def_card not in self.second_deck) or (self.def_card not  in self.first_deck):
+            buff = [(self.att_card),(self.def_card)]
+        elif self.def_card in self.first_deck:
+            buff = [(self.att_card)]                    
         else:
-            buff = [(att_card)]
+            buff = [(self.att_card)]
                 
             for  i in buff:
                 if self.att_quantity % 2 == 1:
@@ -553,8 +577,8 @@ class Durak:
                     if i not in self.first_deck:
                         self.first_deck.append(i)
             self.att_quantity += 1 
-            att_card = None
-            def_card= None
+            self.att_card = None
+            self.def_card= None
             command = 'e'
 
     def end_of_turn(self):
@@ -589,19 +613,21 @@ class Durak:
     # def get_player_or_bot_defense(self):
     #     if self.att_quantity % 2 != 1:return Player(self.first_deck,self.game_deck)
     #     else: return BotDanil(self.second_deck)
+
     def correct_card(self):
         print('\n')
         cprint('  ✔  ','light_green','on_green')
-        odboy.append(att_card)
-        odboy.append(def_card)
+        for i in self.turn_cards:
+            self.odboy.append(i)
         att_card=None
         def_card=None
         command = 'e'
+
     def check_posibility_for_flip(self, att_card):
         for i in self.turn_cards:
             result = deck_instance.compare_values_of_cards(att_card,i)
         return result
-odboy = []
+
 deck_instance = Deck()
 Durak_instance = Durak(deck_instance.create_deck_for_player(), deck_instance.create_deck_for_player(),deck_instance.deck ,deck_instance)
 bot_instance = BotDanil(Durak_instance.second_deck)

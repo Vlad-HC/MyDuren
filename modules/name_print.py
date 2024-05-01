@@ -1,7 +1,7 @@
 import random
 from termcolor import colored, cprint
 from colorama import init, Fore, Back, Style
-import os
+
 
 def name(name):
         elm1 = ['red']

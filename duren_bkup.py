@@ -2,8 +2,8 @@ import random
 from itertools import product
 from termcolor import colored, cprint
 from colorama import init, Fore, Back, Style
-from name_print import name,print_card_middle,print_cool_suit
-from Card import Card
+from modules.name_print import name,print_card_middle,print_cool_suit
+from modules.Card import Card
 import os, sys, time
 from playsound import playsound
 

@@ -26,7 +26,7 @@ class Player :
             
         
     
-    def throw_card(self,turn_cards:list):
+    def flip_card(self,turn_cards:list):
         Card.print_cards(self.player_deck)
         att_card = None
         while att_card == None:

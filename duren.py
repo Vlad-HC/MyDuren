@@ -118,18 +118,20 @@ class Duren:
                         att_card = None
                         def_card = None
                         result = None
-                        subcommand = input(Style.BRIGHT+ Fore.CYAN + "\nthrow more card <<c>>/end turn <<e>>: ")
+                        subcommand = input(Style.BRIGHT+ Fore.CYAN + "\nflip more card <<c>>/end turn <<e>>: ")
 
                         while subcommand not in ['e','c']:
                             cprint('\nwrong command','red')
-                            subcommand = input(Style.BRIGHT+ Fore.CYAN + "\nthrow more card <<c>>/end turn <<e>>: ")
+                            subcommand = input(Style.BRIGHT+ Fore.CYAN + "\nflip more card <<c>>/end turn <<e>>: ")
                             continue
                         
 
                         if subcommand == 'c': 
                             try:
                                 subcommand_ = None   
-                                att_card = self.get_player().throw_card(self.turn_cards)
+                                Card.print_cards(self.turn_cards)
+                                print('\n')
+                                att_card = self.get_player().flip_card(self.turn_cards)
                                 possibility = None
                                 while possibility != 0 and command != 'e':
                                     result = self.check_posibility_for_flip(att_card)
@@ -140,9 +142,9 @@ class Duren:
                                         cprint('\nYou cant do this' ,'red')
                                         if self.att_quantity % 2 == 1 and att_card not in first_deck: first_deck.append(att_card)
                                         elif self.att_quantity % 2 != 1 and att_card not in second_deck: second_deck.append(att_card)
-                                        subcommand = input(Style.BRIGHT+ Fore.CYAN + "\nthrow more card <<c>>/end turn <<e>>: ")
+                                        subcommand = input(Style.BRIGHT+ Fore.CYAN + "\nflip more card <<c>>/end turn <<e>>: ")
 
-                                        if subcommand != 'e': att_card = self.get_player().throw_card(self.turn_cards)
+                                        if subcommand != 'e': att_card = self.get_player().flip_card(self.turn_cards)
                                         elif subcommand == 'e': 
                                             command = 'e'
                                             att_card = None
@@ -154,7 +156,7 @@ class Duren:
                                     cprint('\nwrong command','red')
                                     subcommand_ = input(Style.BRIGHT+ Fore.CYAN + "\ndefense <<d>>/take-cards <<t>>: ")
                                     continue
-
+                                    
                                 if subcommand_ == 'd':
                                     while result != 2 and command != 't': 
                                         print('\n')
@@ -189,7 +191,7 @@ class Duren:
                             
                         if def_card != None and def_card not in self.turn_cards: self.turn_cards.append(def_card)
 
-                        if subcommand == 'e': command = 'e'#!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                        if subcommand == 'e': command = 'e'
                         elif subcommand_ not in ['e','t']: cprint('\nwrong command','red')
                          
                 if command == 't':
@@ -282,11 +284,11 @@ class Duren:
                         command = 'e'
                         
                 if command == 't':
-                    self.turn_take_cards()
+                    self.turn_take_cards(def_card,subcommand)
                     
 
                 if command == 'e':
-                    self.end_of_turn()
+                    self.end_of_turn(att_card)
 
 
             if command == 'q':
@@ -301,9 +303,7 @@ class Duren:
         elif len(second_deck) == 0:
             name(f'\nwinner -------> {self.second_name}')
 
-
-
-    
+    # some funcitons for commands
     def turn_take_cards(self):
         if self.att_card != None:
             return
@@ -355,9 +355,9 @@ class Duren:
     def turn_take_cards(self,def_card,subcommand):
         buff = []
         while subcommand != 'e':
-            subcommand = input(Style.BRIGHT+ Fore.CYAN + "\nthrow more card <<c>>/end turn <<e>>: ")
+            subcommand = input(Style.BRIGHT+ Fore.CYAN + "\nflip more card <<c>>/end turn <<e>>: ")
             if subcommand != 'e':
-                att_card = self.get_player().throw_card(self.turn_cards)
+                att_card = self.get_player().flip_card(self.turn_cards)
                 result = self.check_posibility_for_flip(att_card)
 
                 if result != 0: 

@@ -1,5 +1,5 @@
 How to open? 
-    1. You should install some modules and open duren.py
+    1. You should install some modules and open duren_bkup.py
         How install modules?
             Open terminal and just paste this commands - 
 

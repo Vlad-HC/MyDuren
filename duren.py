@@ -128,60 +128,8 @@ class Duren:
 
                         if subcommand == 'c': 
                             try:
-                                subcommand_ = None   
-                                Card.print_cards(self.turn_cards)
-                                print('\n')
-                                att_card = self.get_player().flip_card(self.turn_cards)
-                                possibility = None
-                                while possibility != 0 and command != 'e':
-                                    result = self.check_posibility_for_flip(att_card)
-                                    if result == 0: possibility = 0 
-                                           
-
-                                    while possibility != 0 and subcommand != 'e':
-                                        cprint('\nYou cant do this' ,'red')
-                                        if self.att_quantity % 2 == 1 and att_card not in first_deck: first_deck.append(att_card)
-                                        elif self.att_quantity % 2 != 1 and att_card not in second_deck: second_deck.append(att_card)
-                                        subcommand = input(Style.BRIGHT+ Fore.CYAN + "\nflip more card <<c>>/end turn <<e>>: ")
-
-                                        if subcommand != 'e': att_card = self.get_player().flip_card(self.turn_cards)
-                                        elif subcommand == 'e': 
-                                            command = 'e'
-                                            att_card = None
-
-                                if result != 2 and command != 'e': 
-                                    subcommand_ = input(Style.BRIGHT+ Fore.CYAN + "\ndefense <<d>>/take-cards <<t>>: ")
-
-                                while subcommand_ not in ['d','t'] and command != 'e':
-                                    cprint('\nwrong command','red')
-                                    subcommand_ = input(Style.BRIGHT+ Fore.CYAN + "\ndefense <<d>>/take-cards <<t>>: ")
-                                    continue
-                                    
-                                if subcommand_ == 'd':
-                                    while result != 2 and command != 't': 
-                                        print('\n')
-                                        if self.att_quantity % 2 == 1:
-                                            if def_card != None:second_deck.append(def_card)
-                                            def_card = self.get_player_for_defense().defense(self.turn_cards)
-                                        else:
-                                            if def_card != None:first_deck.append(def_card)
-                                            def_card = self.get_player_for_defense().defense(self.turn_cards)
-                                        result = self.result(att_card,def_card)
-                                            
-                                        if result != 2:
-                                            cprint('\nYou cant do this' ,'red')
-                                            subcommand_ = input(Style.BRIGHT+ Fore.CYAN + "\ndefense <<d>>/take-cards <<t>>: ")
-                                        while subcommand_ not in ['d','t']:
-                                            cprint('\nwrong command','red')
-                                            subcommand_ = input(Style.BRIGHT+ Fore.CYAN + "\ndefense <<d>>/take-cards <<t>>: ")
-
-                                            
-                                        if subcommand_ == 't':command = 't'
-
-
-                                if subcommand_ == 't':
-                                    command = 't'
-
+                                
+                                self.turn_flip_card()
                             except (IndexError,ValueError):
                                 cprint('card index out of range please write correct index of card!','red')
                                 continue
@@ -417,6 +365,60 @@ class Duren:
             deck.append(i)
         return deck
     
+    def turn_flip_card(self):
+        subcommand_ = None   
+        Card.print_cards(self.turn_cards)
+        print('\n')
+        att_card = self.get_player().flip_card(self.turn_cards)
+        possibility = None
+        while possibility != 0 and command != 'e':
+            result = self.check_posibility_for_flip(att_card)
+            if result == 0: possibility = 0 
+                                           
+
+            while possibility != 0 and subcommand != 'e':
+                cprint('\nYou cant do this' ,'red')
+                if self.att_quantity % 2 == 1 and att_card not in self.first_deck: self.first_deck.append(att_card)
+                elif self.att_quantity % 2 != 1 and att_card not in self.second_deck: self.second_deck.append(att_card)
+                subcommand = input(Style.BRIGHT+ Fore.CYAN + "\nflip more card <<c>>/end turn <<e>>: ")
+
+                if subcommand != 'e': att_card = self.get_player().flip_card(self.turn_cards)
+                elif subcommand == 'e': 
+                    command = 'e'
+                    att_card = None
+
+        if result != 2 and command != 'e': 
+            subcommand_ = input(Style.BRIGHT+ Fore.CYAN + "\ndefense <<d>>/take-cards <<t>>: ")
+
+        while subcommand_ not in ['d','t'] and command != 'e':
+            cprint('\nwrong command','red')
+            subcommand_ = input(Style.BRIGHT+ Fore.CYAN + "\ndefense <<d>>/take-cards <<t>>: ")
+            continue
+                                    
+        if subcommand_ == 'd':
+            while result != 2 and command != 't': 
+                print('\n')
+                if self.att_quantity % 2 == 1:
+                    if def_card != None:self.second_deck.append(def_card)
+                    def_card = self.get_player_for_defense().defense(self.turn_cards)
+                else:
+                    if def_card != None:self.first_deck.append(def_card)
+                    def_card = self.get_player_for_defense().defense(self.turn_cards)
+                result = self.result(att_card,def_card)
+                                            
+                if result != 2:
+                    cprint('\nYou cant do this' ,'red')
+                    subcommand_ = input(Style.BRIGHT+ Fore.CYAN + "\ndefense <<d>>/take-cards <<t>>: ")
+                while subcommand_ not in ['d','t']:
+                    cprint('\nwrong command','red')
+                    subcommand_ = input(Style.BRIGHT+ Fore.CYAN + "\ndefense <<d>>/take-cards <<t>>: ")
+
+                                            
+                if subcommand_ == 't':command = 't'
+
+
+        if subcommand_ == 't':
+            command = 't'
     @staticmethod
     def result(att_card,def_card):
         return deck_instance.compare_cards(att_card,def_card)

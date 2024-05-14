@@ -1,6 +1,5 @@
 import random
 from itertools import product
-
 class Deck:
     deck: list[tuple[str,str,int]]
     
@@ -14,7 +13,9 @@ class Deck:
 
         self.deck = [(rank, suit, self.ranks_values[rank]) for rank, suit in product(ranks, suits)]
         random.shuffle(self.deck)
-        self.cool_suit = random.choice(suits)
+        self.last_card = self.deck[-1]
+        self.rank_of_last_card = self.last_card[0]
+        self.cool_suit = self.last_card[1]
 
     def compare_cards(self, card1, card2):
         _, suit1, value1 = card1

@@ -13,10 +13,20 @@ def name(name):
         cprint(Style.BRIGHT + ' ' + f'{name}'+ ' ',text_color,background_color)
         print('\r')
         
-def print_card_middle(symbol, color):
-    cprint(Style.BRIGHT + f'|  ', 'black', 'on_light_yellow',end='')
-    cprint(Style.BRIGHT + symbol, color ,'on_light_yellow',end='')
-    cprint(Style.BRIGHT + f'  |  ', 'black', 'on_light_yellow',end='')
+def print_card_middle(symbol, color, choice):
+    if choice == 1:
+        cprint(Style.BRIGHT + f'|  ', 'black', 'on_light_yellow',end='')
+        cprint(Style.BRIGHT + symbol, color ,'on_light_yellow',end='')
+        cprint(Style.BRIGHT + f'  |  ', 'black', 'on_light_yellow',end='')
+    elif choice == 2:
+        cprint(Style.BRIGHT + f'|║ ╬ ║| ', 'black', 'on_light_yellow',end='')
+        cprint(Style.BRIGHT + symbol, color ,'on_light_yellow',end='')
+        cprint(Style.BRIGHT + f'   | ', 'black', 'on_light_yellow',end='')
+    elif choice == 3: 
+        cprint(Style.BRIGHT + f'|     ', 'black', 'on_light_yellow',end='')
+        cprint(Style.BRIGHT + symbol, color ,'on_light_yellow',end='')
+        cprint(Style.BRIGHT + f'      |', 'black', 'on_light_yellow',end='')
+         
 
 def print_cool_suit(suit):
     if suit in ['♥','♦']:

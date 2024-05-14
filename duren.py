@@ -291,8 +291,7 @@ class Duren:
         name(self.second_name)
         Card.print_cards(self.second_deck)
         name(f'cards in game deck --> {len(self.game_deck)}')
-        print_cool_suit(deck_instance.cool_suit)
-
+        Card.print_deck(deck_instance.last_card)
     def end_of_turn(self,att_card):
         time.sleep(1)
         os.system("cls")

@@ -44,22 +44,25 @@ class Card:
 
 
     def print_deck(lastcard):
+
+        rank = deck_instance.rank_of_last_card
+        suit = deck_instance.cool_suit
         # card = Card(lastcard[0], lastcard[1], lastcard[2])
         if len(deck_instance.deck) > 1:
             cprint(Style.BRIGHT + f' _____  ','black' ,'on_light_yellow',end='')
             print()
             cprint(Style.BRIGHT + f'|╔ ╥ ╗|_____  ','black' ,'on_light_yellow',end='')
             print()
-            if int(deck_instance.rank_of_last_card) == 10:
-                cprint(Style.BRIGHT + f'|║   ║|   {deck_instance.rank_of_last_card}| ','black' ,'on_light_yellow',end='')
+            if rank == "10":
+                cprint(Style.BRIGHT + f'|║   ║|   {rank}| ','black' ,'on_light_yellow',end='')
                 print()
             else:
-                cprint(Style.BRIGHT + f'|║   ║|    {deck_instance.rank_of_last_card}| ','black' ,'on_light_yellow',end='')
+                cprint(Style.BRIGHT + f'|║   ║|    {rank}| ','black' ,'on_light_yellow',end='')
                 print()
             suit_color= 'black'
-            if deck_instance.cool_suit in ['♥','♦']:
+            if suit in ['♥','♦']:
                 suit_color = 'red'
-            print_card_middle(deck_instance.cool_suit, suit_color, 2)
+            print_card_middle(suit, suit_color, 2)
             print()
 
             cprint(Style.BRIGHT + f'|║   ║|     | ','black' ,'on_light_yellow',end='')
@@ -75,15 +78,15 @@ class Card:
             cprint(Style.BRIGHT + f' ____________ ','black' ,'on_light_yellow',end='')
             print()
 
-            if deck_instance.rank_of_last_card == 10:cprint(Style.BRIGHT + f'|          {deck_instance.rank_of_last_card}| ','black' ,'on_light_yellow',end='')
-            else:cprint(Style.BRIGHT + f'|           {deck_instance.rank_of_last_card}| ','black' ,'on_light_yellow',end='')
+            if rank == 10:cprint(Style.BRIGHT + f'|          {rank}| ','black' ,'on_light_yellow',end='')
+            else:cprint(Style.BRIGHT + f'|           {rank}| ','black' ,'on_light_yellow',end='')
             print()
 
             print_card_middle(deck_instance.cool_suit)
             print()
 
-            if deck_instance.rank_of_last_card == 10:cprint(Style.BRIGHT + f'|{deck_instance.rank_of_last_card}          |','black' ,'on_light_yellow',end='')
-            else:cprint(Style.BRIGHT + f'|{deck_instance.rank_of_last_card}           |','black' ,'on_light_yellow',end='')
+            if rank == 10:cprint(Style.BRIGHT + f'|{rank}          |','black' ,'on_light_yellow',end='')
+            else:cprint(Style.BRIGHT + f'|{rank}           |','black' ,'on_light_yellow',end='')
             print()
             cprint(Style.BRIGHT + f' ‾‾‾‾‾‾‾‾‾‾‾‾ ','black' ,'on_light_yellow',end='')
             print()

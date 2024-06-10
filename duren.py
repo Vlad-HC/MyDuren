@@ -3,7 +3,7 @@ from termcolor import colored, cprint
 from colorama import Fore, Style
 from playsound import playsound
 from modules.Card import Card
-from modules.Deck import Deck
+from modules.Deck import Deck,deck_instance
 from modules.Player import Player
 from modules.Bot import BotDanil
 import os, time
@@ -17,7 +17,7 @@ class Duren:
         self.second_deck = second_deck
         self.odboy = []
         os.system("cls")
-
+        self.last_card = deck_instance.last_card
         self.choice = input(Fore.BLUE + '\n1 - play with bot or 2 - play with friend :')
         self.first_name = input(Fore.BLUE + 'write your name: ')
         if self.choice == '1':
@@ -105,8 +105,7 @@ class Duren:
                                 card = int(input(f'\nchoose card to defense(1,2,3..): '))
                                 def_card = second_deck.pop(card-1)
                                 result = deck_ex.compare_cards(att_card,def_card)
-                                if result == 1:
-                                    self.turn_cards.append(def_card)
+                                self.turn_cards.append(def_card)
                             except ValueError:
                                 cprint('card index out of range please write correct index of card!','red')
                                 continue
@@ -129,7 +128,7 @@ class Duren:
                         if subcommand == 'c': 
                             try:
                                 
-                                self.turn_flip_card()
+                                self.turn_flip_card(command)
                             except (IndexError,ValueError):
                                 cprint('card index out of range please write correct index of card!','red')
                                 continue
@@ -140,7 +139,7 @@ class Duren:
                         if def_card != None and def_card not in self.turn_cards: self.turn_cards.append(def_card)
 
                         if subcommand == 'e': command = 'e'
-                        elif subcommand_ not in ['e','t']: cprint('\nwrong command','red')
+                        # elif subcommand_ not in ['e','t']: cprint('\nwrong command','red')
                          
                 if command == 't':
                     if  att_card == None and subcommand!='e':
@@ -291,7 +290,8 @@ class Duren:
         name(self.second_name)
         Card.print_cards(self.second_deck)
         name(f'cards in game deck --> {len(self.game_deck)}')
-        Card.print_deck(deck_instance.last_card)
+        Card.print_deck(self.last_card)
+
     def end_of_turn(self,att_card):
         time.sleep(1)
         os.system("cls")
@@ -364,7 +364,7 @@ class Duren:
             deck.append(i)
         return deck
     
-    def turn_flip_card(self):
+    def turn_flip_card(self,command):
         subcommand_ = None   
         Card.print_cards(self.turn_cards)
         print('\n')
@@ -422,6 +422,6 @@ class Duren:
     def result(att_card,def_card):
         return deck_instance.compare_cards(att_card,def_card)
 
-deck_instance = Deck()
+# deck_instance = Deck()
 Duren_instance = Duren(deck_instance.create_deck_for_player(), deck_instance.create_deck_for_player(),deck_instance.deck ,deck_instance)
 bot_instance = BotDanil(Duren_instance.second_deck)

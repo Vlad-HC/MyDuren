@@ -18,7 +18,8 @@ class Duren:
         self.odboy = []
         os.system("cls")
         self.last_card = deck_instance.last_card
-        self.choice = input(Fore.BLUE + '\n1 - play with bot or 2 - play with friend :')
+        # self.choice = input(Fore.BLUE + '\n1 - play with bot or 2 - play with friend :')
+        self.choice = '2'
         self.first_name = input(Fore.BLUE + 'write your name: ')
         if self.choice == '1':
             self.second_name = BotDanil(second_deck).name
@@ -47,10 +48,10 @@ class Duren:
 
             if self.att_quantity % 2 == 1:
                 cprint(f'\n{self.second_name} turn', 'light_green')    
-                command = input(Style.BRIGHT+ Fore.CYAN + "\nattack(a)/defense(d)/take-cards(t)/end_of_turn(e): ")
+                command = self.command()
             else:
                 cprint(f'\n{self.first_name} turn', 'light_green')    
-                command = input(Style.BRIGHT+ Fore.CYAN + "\nattack(a)/defense(d)/take-cards(t)/end_of_turn(e): ")
+                command = self.command()
             if command not in ["a", "d", "t",'e','q',')','s']:
                 cprint('\nwrong command','red')
                 
@@ -112,16 +113,14 @@ class Duren:
 
                     while result  == 2 and command != 'e' and command != 't':
                         self.correct_card()
-                        
-
                         att_card = None
                         def_card = None
                         result = None
-                        subcommand = input(Style.BRIGHT+ Fore.CYAN + "\nflip more card <<c>>/end turn <<e>>: ")
+                        subcommand = self.subcommand()
 
                         while subcommand not in ['e','c']:
                             cprint('\nwrong command','red')
-                            subcommand = input(Style.BRIGHT+ Fore.CYAN + "\nflip more card <<c>>/end turn <<e>>: ")
+                            subcommand = self.subcommand()
                             continue
                         
 
@@ -168,7 +167,7 @@ class Duren:
 
 
             if self.choice == '1':#<--------------------------------------------------------------------------
-                if self.att_quantity % 2 == 1 and att_card == None: command = 'a'
+               """ if self.att_quantity % 2 == 1 and att_card == None: command = 'a'
                 if command == 'a':
                     try:
                         if att_card != None:
@@ -207,7 +206,7 @@ class Duren:
                     while result != 2 and command != 't':
                         cprint('\nimposible',"red")
                         if self.att_quantity % 2 != 1:
-                            command = input("\nenter to continue/take-cards(t) : ")
+                            command = self.command()
 
                             if def_card not in first_deck:
                                 first_deck.append(def_card)
@@ -248,7 +247,7 @@ class Duren:
         if len(first_deck) == 0:
             name(f'\nwinner -------> {self.first_name}')
         elif len(second_deck) == 0:
-            name(f'\nwinner -------> {self.second_name}')
+            name(f'\nwinner -------> {self.second_name}')"""
 
     # some funcitons for commands
     def turn_take_cards(self):
@@ -302,7 +301,7 @@ class Duren:
     def turn_take_cards(self,def_card,subcommand):
         buff = []
         while subcommand != 'e':
-            subcommand = input(Style.BRIGHT+ Fore.CYAN + "\nflip more card <<c>>/end turn <<e>>: ")
+            subcommand = self.subcommand()
             if subcommand != 'e':
                 att_card = self.get_player().flip_card(self.turn_cards)
                 result = self.check_posibility_for_flip(att_card)
@@ -332,14 +331,6 @@ class Duren:
     def get_player_for_defense(self):
         return Player(self.second_deck if self.att_quantity % 2 else self.first_deck, self.game_deck)
     
-    # def get_player_or_bot(self):
-    #     if self.att_quantity % 2 == 1:return Player(self.first_deck,self.game_deck)
-    #     else: BotDanil(self.second_deck)
-
-    # def get_player_or_bot_defense(self):
-    #     if self.att_quantity % 2 != 1:return Player(self.first_deck,self.game_deck)
-    #     else: return BotDanil(self.second_deck)
-
     def correct_card(self):
         print('\n')
         cprint('  ✔  ','light_green','on_green')
@@ -364,6 +355,18 @@ class Duren:
             deck.append(i)
         return deck
     
+    def subcommand(self):
+        subcommand = input(Style.BRIGHT+ Fore.CYAN + "\nflip more card <<c>>/end turn <<e>>: ")
+        return subcommand
+    
+    def subcommand_(self):
+        subcommand_ = input(Style.BRIGHT+ Fore.CYAN + "\ndefense <<d>>/take cards <<t>>: ")
+        return subcommand_
+    
+    def command(self):
+        command = input(Style.BRIGHT+ Fore.CYAN + "\nattack<<a>>/defense<<d>>/take cards<<t>>/end of turn<<e>>: ")
+        return command
+    
     def turn_flip_card(self,command):
         subcommand_ = None   
         Card.print_cards(self.turn_cards)
@@ -373,13 +376,12 @@ class Duren:
         while possibility != 0 and command != 'e':
             result = self.check_posibility_for_flip(att_card)
             if result == 0: possibility = 0 
-                                           
 
             while possibility != 0 and subcommand != 'e':
                 cprint('\nYou cant do this' ,'red')
                 if self.att_quantity % 2 == 1 and att_card not in self.first_deck: self.first_deck.append(att_card)
                 elif self.att_quantity % 2 != 1 and att_card not in self.second_deck: self.second_deck.append(att_card)
-                subcommand = input(Style.BRIGHT+ Fore.CYAN + "\nflip more card <<c>>/end turn <<e>>: ")
+                subcommand = self.subcommand()
 
                 if subcommand != 'e': att_card = self.get_player().flip_card(self.turn_cards)
                 elif subcommand == 'e': 
@@ -387,11 +389,11 @@ class Duren:
                     att_card = None
 
         if result != 2 and command != 'e': 
-            subcommand_ = input(Style.BRIGHT+ Fore.CYAN + "\ndefense <<d>>/take-cards <<t>>: ")
+            subcommand_ = self.subcommand_()
 
         while subcommand_ not in ['d','t'] and command != 'e':
             cprint('\nwrong command','red')
-            subcommand_ = input(Style.BRIGHT+ Fore.CYAN + "\ndefense <<d>>/take-cards <<t>>: ")
+            subcommand_ = self.subcommand_()
             continue
                                     
         if subcommand_ == 'd':
@@ -407,10 +409,10 @@ class Duren:
                                             
                 if result != 2:
                     cprint('\nYou cant do this' ,'red')
-                    subcommand_ = input(Style.BRIGHT+ Fore.CYAN + "\ndefense <<d>>/take-cards <<t>>: ")
+                    subcommand_ = self.subcommand_()
                 while subcommand_ not in ['d','t']:
                     cprint('\nwrong command','red')
-                    subcommand_ = input(Style.BRIGHT+ Fore.CYAN + "\ndefense <<d>>/take-cards <<t>>: ")
+                    subcommand_ = self.subcommand_()
 
                                             
                 if subcommand_ == 't':command = 't'
@@ -418,10 +420,10 @@ class Duren:
 
         if subcommand_ == 't':
             command = 't'
+        return command    
     @staticmethod
     def result(att_card,def_card):
         return deck_instance.compare_cards(att_card,def_card)
 
-# deck_instance = Deck()
 Duren_instance = Duren(deck_instance.create_deck_for_player(), deck_instance.create_deck_for_player(),deck_instance.deck ,deck_instance)
 bot_instance = BotDanil(Duren_instance.second_deck)

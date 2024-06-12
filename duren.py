@@ -127,7 +127,7 @@ class Duren:
                         if subcommand == 'c': 
                             try:
                                 
-                                self.turn_flip_card(command)
+                                self.turn_flip_card(command,def_card)
                             except (IndexError,ValueError):
                                 cprint('card index out of range please write correct index of card!','red')
                                 continue
@@ -341,7 +341,6 @@ class Duren:
         for i in self.turn_cards:
             result = deck_instance.compare_values_of_cards(att_card,i)
         return result
-
     def sort_deck(self):
         deck = self.get_player().player_deck
         sorted_deck = []
@@ -367,7 +366,7 @@ class Duren:
         command = input(Style.BRIGHT+ Fore.CYAN + "\nattack<<a>>/defense<<d>>/take cards<<t>>/end of turn<<e>>: ")
         return command
     
-    def turn_flip_card(self,command):
+    def turn_flip_card(self,command,def_card):
         subcommand_ = None   
         Card.print_cards(self.turn_cards)
         print('\n')
